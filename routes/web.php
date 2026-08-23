@@ -4,9 +4,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('dashboard/index');
-});
+})->name('dashboard');
 
 
 Route::get('/login', function () {
-    return view('dashboard/auth/login');
-});
+    return view('/auth/login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('/auth/register');
+})->name('register');
