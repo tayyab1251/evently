@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Events\EventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,9 +47,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     })->name('dashboard');
 
     // Events
-    Route::get('/events', function () {
-        return view('dashboard/events/index');
-    })->name('events');
+    // Route::get('/events', function () {
+    //     return view('dashboard/events/index');
+    // })->name('events');
+    Route::resource('events', EventController::class);
 
     // Logout
     Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
