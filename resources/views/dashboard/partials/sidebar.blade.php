@@ -4,7 +4,7 @@ Highly polished, dark-green sticky navigation
 ========================================== -->
 <div class="sidebar-wrapper" id="sidebar">
     <!-- Brand Logo / Identity -->
-    <a href="index.html" class="sidebar-brand">
+    <a href="{{ route('admin.dashboard') }}" class="sidebar-brand">
         <i class="bi bi-asterisk"></i>
         <span>{{config('app.name')}}</span>
     </a>
@@ -16,7 +16,7 @@ Highly polished, dark-green sticky navigation
             <div class="sidebar-menu-title">Menu</div>
             <ul class="sidebar-menu-list">
                 <li class="sidebar-menu-item">
-                    <a href="index.html" class="sidebar-menu-link active" id="menu-overview" title="Overview">
+                    <a href="{{ route('admin.dashboard') }}" class="sidebar-menu-link active" id="menu-overview" title="Overview">
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -26,15 +26,15 @@ Highly polished, dark-green sticky navigation
 
         <!-- Group: Components -->
         <div class="sidebar-menu-section">
-            <div class="sidebar-menu-title">Components</div>
+            <div class="sidebar-menu-title">Events</div>
             <ul class="sidebar-menu-list">
                 <li class="sidebar-menu-item">
-                    <a href="tables-basic.html" class="sidebar-menu-link" id="menu-basictables" title="Events">
+                    <a href="{{ route('admin.events.index') }}" class="sidebar-menu-link" id="menu-basictables" title="Events">
                         <i class="bi bi-table"></i>
                         <span>Events</span>
                     </a>
                 </li>
-                <li class="sidebar-menu-item">
+                {{-- <li class="sidebar-menu-item">
                     <a href="ui-forms.html" class="sidebar-menu-link" id="menu-uiforms" title="Forms and Input">
                         <i class="bi bi-input-cursor-text"></i>
                         <span>Forms & Input</span>
@@ -45,12 +45,12 @@ Highly polished, dark-green sticky navigation
                         <i class="bi bi-menu-button-wide-fill"></i>
                         <span>Buttons & Alerts</span>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
 
         <!-- Group: Pages -->
-        <div class="sidebar-menu-section">
+        {{-- <div class="sidebar-menu-section">
             <div class="sidebar-menu-title">Pages</div>
             <ul class="sidebar-menu-list">
                 <li class="sidebar-menu-item">
@@ -72,7 +72,7 @@ Highly polished, dark-green sticky navigation
                     </a>
                 </li>
             </ul>
-        </div>
+        </div> --}}
     </div>
 
     <!-- Sidebar Profile Card (Dynamic Footer) -->
