@@ -40,7 +40,7 @@
 
     {{-- Dashboard JavaScript --}}
     @include('dashboard.includes.dashboard-js')
-
+    @include('sweetalert2::index')
 </body>
 
 </html>
