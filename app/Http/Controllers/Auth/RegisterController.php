@@ -19,6 +19,6 @@ class RegisterController extends Controller
     public function store(RegisterRequest $request)
     {
         User::create($request->validated());
-        return redirect()->route('login')->with('success', 'User account has been created');
+        return redirect()->route('admin.login')->with('success', 'User account has been created');
     }
 }

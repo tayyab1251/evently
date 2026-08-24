@@ -29,9 +29,9 @@ Highly polished, dark-green sticky navigation
             <div class="sidebar-menu-title">Components</div>
             <ul class="sidebar-menu-list">
                 <li class="sidebar-menu-item">
-                    <a href="tables-basic.html" class="sidebar-menu-link" id="menu-basictables" title="Basic Tables">
+                    <a href="tables-basic.html" class="sidebar-menu-link" id="menu-basictables" title="Events">
                         <i class="bi bi-table"></i>
-                        <span>Basic Tables</span>
+                        <span>Events</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">

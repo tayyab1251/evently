@@ -12,7 +12,7 @@ START: Authentication Container & Login Card
     <div class="login-card">
 
         <!-- Brand Identity -->
-        <a href="{{route('dashboard')}}" class="login-brand text-decoration-none">
+        <a href="{{route('admin.dashboard')}}" class="login-brand text-decoration-none">
             <i class="bi bi-asterisk"></i>
             <span>{{config('app.name')}}</span>
         </a>
@@ -33,7 +33,7 @@ START: Authentication Container & Login Card
         @enderror
 
         <!-- Login Form -->
-        <form action="{{ route('login.check') }}" method="POST" id="loginForm" class="needs-validation" novalidate>
+        <form action="{{ route('admin.login.check') }}" method="POST" id="loginForm" class="needs-validation" novalidate>
 
             <!-- Email Input Group -->
             <div class="login-form-group">
@@ -105,7 +105,7 @@ START: Authentication Container & Login Card
 
         <!-- Footer Link -->
         <p class="login-footer-text">
-            Don't have an account? <a href="{{route('register')}}" id="link-register">Register Now</a>
+            Don't have an account? <a href="{{route('admin.register')}}" id="link-register">Register Now</a>
         </p>
 
     </div>

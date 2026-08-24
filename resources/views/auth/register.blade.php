@@ -13,13 +13,13 @@ START: Authentication Container & Registration Card
     <!-- Main centered registration card -->
     <div class="login-card">
         <!-- Brand Identity -->
-        <a href="{{ route('register.store') }}" class="login-brand text-decoration-none">
+        <a href="{{ route('admin.register.store') }}" class="login-brand text-decoration-none">
             <i class="bi bi-asterisk"></i>
             <span>{{ config('app.name') }}</span>
         </a>
         <p class="login-subtitle">Create your account to access your dashboard</p>
         <!-- Registration Form -->
-        <form action="{{ route('register.store') }}" method="POST" id="registerForm" class="needs-validation"
+        <form action="{{ route('admin.register.store') }}" method="POST" id="registerForm" class="needs-validation"
             novalidate>
             @csrf
             <!-- Name Input Group -->
@@ -132,7 +132,7 @@ START: Authentication Container & Registration Card
         <!-- Footer Link -->
         <p class="login-footer-text">
             Already have an account?
-            <a href="{{ route('login') }}" id="link-login">
+            <a href="{{ route('admin.login') }}" id="link-login">
                 Sign In
             </a>
         </p>
