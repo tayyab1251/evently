@@ -12,19 +12,39 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
+
             $table->id();
+
             $table->foreignId('category_id')
                 ->constrained()
                 ->restrictOnDelete();
 
             $table->string('name', 255);
+
             $table->text('description');
-            $table->string('location', 255);
+
+            $table->string('location_name', 255);
+
+            $table->string('address', 500);
+
+            $table->string('city', 100);
+
+            $table->decimal('latitude', 10, 7)->nullable();
+
+            $table->decimal('longitude', 10, 7)->nullable();
+
+            $table->string('map_url', 2048)->nullable();
+
             $table->string('type', 50)->default('free'); // free | paid
+
             $table->unsignedBigInteger('price')->default(0);
-            $table->dateTime('starting_time');
-            $table->dateTime('ending_time');
+
+            $table->dateTime('start_at');
+
+            $table->dateTime('end_at');
+
             $table->unsignedInteger('max_attendees')->default(1);
+
             $table->timestamps();
         });
     }

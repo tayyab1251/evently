@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Events;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Event\CreateEventRequest;
+use App\Models\Category;
+use App\Models\Event;
 use Illuminate\Http\Request;
+use SweetAlert2\Laravel\Swal;
 
 class EventController extends Controller
 {
@@ -20,15 +24,39 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('dashboard.events.create');
+        $categories = Category::all();
+        // dd($categories);
+        return view('dashboard.events.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateEventRequest $request)
     {
-        dd($request);
+        // dd($request);   
+        $validateEventData = $request->validated();
+
+        // renamed because in view i used ---->category
+        $validateEventData['category_id'] = $validateEventData['category'];
+        unset($validateEventData['category']);
+
+        $evnt = Event::create($validateEventData);
+
+        if (! $evnt) {
+            Swal::error([
+                'title' => 'Failed!',
+                'text' => 'Failed to create an Event.',
+            ]);
+            return redirect()->back();
+        }
+
+        Swal::success([
+            'title' => 'Event Created!',
+            'text' => 'The event has been created successfully.',
+        ]);
+
+        return redirect()->route('admin.events.index');
     }
 
     /**
