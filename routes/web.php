@@ -22,20 +22,16 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('guest')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('guest')->group(function () {
 
-    Route::get('/admin/login', [LoginController::class, 'showLoginForm'])
-        ->name('login');
+        Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
-    Route::post('/admin/login', [LoginController::class, 'login'])
-        ->name('login.check');
+        Route::post('/login', [LoginController::class, 'login'])->name('login.check');
 
-    Route::get('/admin/register', [RegisterController::class, 'showRegisterForm'])
-        ->name('register');
+        Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 
-    Route::post('/admin/register', [RegisterController::class, 'store'])
-        ->name('register.store');
-});
+        Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+    });
 
 /*
 |--------------------------------------------------------------------------
@@ -43,13 +39,17 @@ Route::middleware('guest')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
-    Route::get('/admin/dashboard', function () {
+    Route::get('/dashboard', function () {
         return view('dashboard/index');
     })->name('dashboard');
 
+    // Events
+    Route::get('/events', function () {
+        return view('dashboard/events/index');
+    })->name('events');
 
     // Logout
-    Route::post('/admin/logout', [LogoutController::class, 'logout'])->name('logout');
+    Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 });
