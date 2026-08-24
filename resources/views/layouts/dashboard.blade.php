@@ -32,11 +32,10 @@
         {{-- Page Content --}}
         @yield('content')
 
-
         {{-- Footer --}}
         @include('dashboard.partials.footer')
 
-    </  div>
+    </div>
 
 
     {{-- Dashboard JavaScript --}}
