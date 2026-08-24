@@ -13,7 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // redirect Authenticated users to the dashboard if they try to access login/register pages
-        $middleware->redirectUsersTo('/admin/dashboard');
+        $middleware->redirectUsersTo('admin.dashboard');
+        // if guests then
+        $middleware->redirectGuestsTo(fn (Request $request) => route('admin.login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
