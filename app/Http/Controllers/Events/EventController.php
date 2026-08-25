@@ -16,7 +16,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        return view('dashboard/events/index');
+        $events = Event::all();
+        return view('dashboard/events/index', compact('events'));
     }
 
     /**
@@ -35,28 +36,25 @@ class EventController extends Controller
     public function store(CreateEventRequest $request)
     {
         // dd($request);   
-        $validateEventData = $request->validated();
+        $eventData = $request->validated();
 
-        // renamed because in view i used ---->category
-        $validateEventData['category_id'] = $validateEventData['category'];
-        unset($validateEventData['category']);
+        try {
+            Event::create($eventData);
 
-        $evnt = Event::create($validateEventData);
-
-        if (! $evnt) {
-            Swal::error([
-                'title' => 'Failed!',
-                'text' => 'Failed to create an Event.',
+            Swal::success([
+                'title' => 'Event Created!',
+                'text' => 'The event has been created successfully.',
             ]);
+
+            return redirect()->route('admin.events.index');
+        } catch (\Exception $ex) {
+            Swal::error([
+                'title' => 'Something went wrong!',
+                'text' => $ex->getMessage(),
+            ]);
+
             return redirect()->back();
         }
-
-        Swal::success([
-            'title' => 'Event Created!',
-            'text' => 'The event has been created successfully.',
-        ]);
-
-        return redirect()->route('admin.events.index');
     }
 
     /**
@@ -64,7 +62,8 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $event = Event::findOrFail($id);
+        return view('dashboard.events.show', compact('event'));
     }
 
     /**

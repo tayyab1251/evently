@@ -52,4 +52,12 @@ class CreateEventRequest extends FormRequest
             'max_attendees' => ['required', 'integer', 'min:1', 'max:1000000'],
         ];
     }
+
+
+    public function attributes(): array
+    {
+        return[
+            'category_id' => 'category'
+        ];
+    }
 }
