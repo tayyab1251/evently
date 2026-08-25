@@ -5,87 +5,236 @@
 @section('content')
 
 <div class="page-header">
-  <div>
-    <h1 class="page-title">Events</h1>
-  </div>
-  <a href="{{ route('admin.events.create') }}" class="btn-quick-action mb-3" >
-    <i class="bi bi-plus-lg"></i>
-    <span>Create</span>
-  </a>
+    <div>
+        <h1 class="page-title">Events</h1>
+        <p class="text-muted small mb-0">
+            Manage all events added by admin
+        </p>
+    </div>
+
+    <a href="{{ route('admin.events.create') }}" class="btn btn-forest-primary mb-3">
+        <i class="bi bi-plus-lg me-1"></i>
+        Create Event
+    </a>
 </div>
 
 <div class="row g-4">
+    <div class="col-12">
 
-  <!-- Responsive Table Wrapper -->
-  <div class="table-responsive">
-    <table class="table-custom">
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>Product Info</th>
-          <th>Category</th>
-          <th>Amount</th>
-          <th>Order Date</th>
-          <th>Status</th>
-          <th class="text-center">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Row 1 -->
-        <tr>
-          <td class="table-order-id">#ORD-9982</td>
-          <td>
-            <div class="table-user-cell">
-              <img src="{{Vite::asset('resources/assets/images/user_1.jpg')}}" alt="Eleanor Pena"
-                class="table-user-avatar" onerror="this.src='assets/images/avatar.png'">
-              <div>
-                <div class="table-user-name">Eleanor Pena</div>
-                <div class="table-user-sub">eleanor.pena@example.com</div>
-              </div>
+        <div class="card border-light rounded" style="padding: 1rem">
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table-custom mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Category</th>
+                                <th>Schedule</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Type / Price</th>
+                                <th>Capacity</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @forelse($events as $event)
+
+                            <tr>
+
+                                {{-- Event --}}
+                                <td>
+                                    <div class="fw-semibold text-main">
+                                        <span class="text-muted small mt-1">
+                                            #{{$loop->iteration }}
+                                            {{-- #{{  $event->id }} --}}
+                                        </span> &nbsp; {{ $event->name }}
+                                    </div>
+
+
+                                </td>
+
+
+                                {{-- Category --}}
+                                <td>
+                                    <span class="badge badge-soft-forest">
+                                        {{ $event->category->name ?? 'N/A' }}
+                                    </span>
+                                </td>
+
+
+                                {{-- Schedule --}}
+                                <td>
+                                    <div class="small fw-semibold">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        {{ $event->start_at }}
+                                    </div>
+
+                                    <div class="text-muted small mt-1">
+                                        <i class="bi bi-clock me-1"></i>
+                                        {{ $event->start_at }}
+                                    </div>
+                                </td>
+
+
+                                {{-- Location --}}
+                                <td>
+                                    <div class="small fw-semibold">
+                                        <i class="bi bi-geo-alt me-1"></i>
+                                        {{ $event->location_name }}
+                                    </div>
+
+                                    <div class="text-muted small mt-1">
+                                        {{ $event->city }}
+                                    </div>
+                                </td>
+
+
+                                {{-- Status --}}
+                                <td>
+
+                                    @switch($event->status)
+
+                                    @case('Upcoming')
+                                    <span class="badge badge-soft-primary rounded-pill px-3 py-1">
+                                        <span class="status-indicator-dot active me-1"></span>
+                                        Upcoming
+                                    </span>
+                                    @break
+
+                                    @case('Ongoing')
+                                    <span class="badge badge-soft-success rounded-pill px-3 py-1">
+                                        <span class="status-indicator-dot active me-1"></span>
+                                        Ongoing
+                                    </span>
+                                    @break
+
+                                    @case('Completed')
+                                    <span class="badge badge-soft-forest rounded-pill px-3 py-1">
+                                        Completed
+                                    </span>
+                                    @break
+
+                                    @default
+                                    <span class="badge badge-soft-warning rounded-pill px-3 py-1">
+                                        {{ $event->status }}
+                                    </span>
+
+                                    @endswitch
+
+                                </td>
+
+
+                                {{-- Type / Price --}}
+                                <td>
+
+                                    <span class="badge badge-outline-forest rounded-pill px-3 py-1">
+                                        {{ ucfirst($event->type) }}
+                                    </span>
+
+                                    <div class="mt-2">
+
+                                        @if($event->price > 0)
+
+                                        <span class="badge badge-soft-lime">
+                                            PKR {{ $event->price }}
+                                        </span>
+
+                                        @else
+
+                                        <span class="badge badge-soft-success">
+                                            Free
+                                        </span>
+
+                                        @endif
+
+                                    </div>
+
+                                </td>
+
+
+                                {{-- Capacity --}}
+                                <td>
+                                    <span class="badge badge-soft-primary">
+                                        <i class="bi bi-people me-1"></i>
+                                        {{ number_format($event->max_attendees) }}
+                                    </span>
+                                </td>
+
+
+                                {{-- Actions --}}
+                                <td>
+
+                                    <div class="d-flex justify-content-center gap-1">
+
+                                        {{-- View --}}
+                                        <a href="{{ route('admin.events.show', $event->id) }}"
+                                            class="btn btn-icon btn-soft-forest" title="View details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+
+                                        {{-- Edit --}}
+                                        <a href="#" class="btn btn-icon btn-lime-primary" title="Edit event">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+
+
+                                        {{-- Delete --}}
+                                        <a href="#" class="btn btn-icon btn-soft-danger" title="Delete event">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            @empty
+
+                            <tr>
+                                <td colspan="8" class="text-center py-5">
+
+                                    <div class="mb-2">
+                                        <i class="bi bi-calendar-x fs-2 text-muted"></i>
+                                    </div>
+
+                                    <div class="fw-semibold text-main">
+                                        No events found
+                                    </div>
+
+                                    <div class="text-muted small mb-3">
+                                        Start by creating your first event.
+                                    </div>
+
+                                    <a href="{{ route('admin.events.create') }}" class="btn btn-forest-primary btn-sm">
+                                        <i class="bi bi-plus-lg me-1"></i>
+                                        Create Event
+                                    </a>
+
+                                </td>
+                            </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
             </div>
-          </td>
-          <td class="table-product-name">Oversized Hoodie</td>
-          <td>Apparel</td>
-          <td class="table-amount">$89.90</td>
-          <td>Feb 14, 2026</td>
-          <td><span class="badge-table success">Paid</span></td>
-          <td>
-            <div class="d-flex justify-content-center gap-1">
-              <a href="#" class="table-btn-action" title="View details"><i class="bi bi-eye"></i></a>
-              <a href="#" class="table-btn-action" title="Edit row"><i class="bi bi-pencil"></i></a>
-              <a href="#" class="table-btn-action delete" title="Delete row"><i class="bi bi-trash"></i></a>
-            </div>
-          </td>
-        </tr>
-        <!-- Row 2 -->
-        <tr>
-          <td class="table-order-id">#ORD-9981</td>
-          <td>
-            <div class="table-user-cell">
-              <img src="{{Vite::asset('resources/assets/images/user_2.jpg')}}" alt="Wade Warren"
-                class="table-user-avatar" onerror="this.src='assets/images/avatar.png'">
-              <div>
-                <div class="table-user-name">Wade Warren</div>
-                <div class="table-user-sub">wade.warren@example.com</div>
-              </div>
-            </div>
-          </td>
-          <td class="table-product-name">Gaming Console</td>
-          <td>Electronics</td>
-          <td class="table-amount">$499.00</td>
-          <td>Feb 13, 2026</td>
-          <td><span class="badge-table pending">Processing</span></td>
-          <td>
-            <div class="d-flex justify-content-center gap-1">
-              <a href="#" class="table-btn-action" title="View details"><i class="bi bi-eye"></i></a>
-              <a href="#" class="table-btn-action" title="Edit row"><i class="bi bi-pencil"></i></a>
-              <a href="#" class="table-btn-action delete" title="Delete row"><i class="bi bi-trash"></i></a>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
+        </div>
+
+    </div>
 </div>
+
 @endsection

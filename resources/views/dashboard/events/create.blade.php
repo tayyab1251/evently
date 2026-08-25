@@ -47,7 +47,7 @@
                             Event Category
                         </label>
 
-                        <select class="form-select-custom" name="category" id="category">
+                        <select class="form-select-custom" name="category_id" id="category">
                             <option selected disabled>
                                 Choose Event Category...
                             </option>
@@ -59,9 +59,11 @@
                             </option>
                             @endforeach
 
+                            <option value="111">Test</option>
+
                         </select>
 
-                        @error('category')
+                        @error('category_id')
                         <div class="form-feedback-custom invalid-custom">
                             <i class="bi bi-exclamation-circle-fill"></i>
                             {{ $message }}
@@ -348,11 +350,11 @@
         <!-- Form Actions -->
         <div class="d-flex justify-content-end gap-2 mt-4">
 
-            <a href="{{ route('admin.events.index') }}" class="btn btn-light">
+            <a href="{{ route('admin.events.index') }}" class="btn btn-light-cancel">
                 Cancel
             </a>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-forest-primary">
                 Create Event
             </button>
 
