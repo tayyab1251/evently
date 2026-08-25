@@ -48,12 +48,13 @@ class EventController extends Controller
 
             return redirect()->route('admin.events.index');
         } catch (\Exception $ex) {
+            report($ex->getMessage());
             Swal::error([
                 'title' => 'Something went wrong!',
-                'text' => $ex->getMessage(),
+                'text' => 'Failed to create event',
             ]);
 
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
     }
 
