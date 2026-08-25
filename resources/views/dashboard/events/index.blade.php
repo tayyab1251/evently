@@ -53,7 +53,7 @@
                                     <div class="fw-semibold text-main">
                                         <span class="text-muted small mt-1">
                                             #{{$loop->iteration }}
-                                            {{-- #{{  $event->id }} --}}
+                                            {{-- #{{ $event->id }} --}}
                                         </span> &nbsp; {{ $event->name }}
                                     </div>
 
@@ -187,10 +187,15 @@
 
 
                                         {{-- Delete --}}
-                                        <a href="#" class="btn btn-icon btn-soft-danger" title="Delete event">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-
+                                        <form method="POST" action="{{ route('admin.events.destroy', $event->id) }}"
+                                            class="delete-event-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button id="deleteButton" class="btn btn-icon btn-soft-danger"
+                                                title="Delete event">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
 
                                 </td>
@@ -236,5 +241,35 @@
 
     </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll('.delete-event-form').forEach(function (form) {
+
+        form.addEventListener('submit', function (e) {
+
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Delete event?',
+                text: 'This action cannot be undone.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+            }).then(function (result) {
+
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+
+            });
+
+        });
+
+    });
+</script>
+@endpush
 
 @endsection

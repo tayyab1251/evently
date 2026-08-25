@@ -88,6 +88,24 @@ class EventController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $event = Event::findOrFail($id);
+
+            $event->delete();
+
+            Swal::success([
+                'title' => 'Event Deleted!',
+                'text'  => 'The event has been deleted successfully.'
+            ]);
+
+            return redirect()->back();
+        } catch (\Exception $ex) {
+            Swal::error([
+                'title' => 'Deletion Failed!',
+                'text'  => 'Failed to delete the event.'
+            ]);
+
+            return redirect()->back();
+        }
     }
 }

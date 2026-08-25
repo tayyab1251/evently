@@ -37,10 +37,15 @@
 
     </div>
 
+    {{-- SweetAlert2 --}}
+    @include('sweetalert2::index')
 
     {{-- Dashboard JavaScript --}}
     @include('dashboard.includes.dashboard-js')
-    @include('sweetalert2::index')
+
+    {{-- Page-specific JavaScript --}}
+    @stack('scripts')
+
 </body>
 
 </html>
