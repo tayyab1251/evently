@@ -4,6 +4,7 @@ namespace App\Http\Requests\Event;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Override;
 
 class CreateEventRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class CreateEventRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3', 'max:150'],
 
-            'category' => ['required', 'integer', 'exists:categories,id'],
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
 
             'description' => ['required', 'string', 'min:20', 'max:5000'],
 
@@ -53,11 +54,14 @@ class CreateEventRequest extends FormRequest
         ];
     }
 
-
-    public function attributes(): array
+    // Define custome messages for category_id validation failure
+    #[Override]
+    public function messages()
     {
-        return[
-            'category_id' => 'category'
+        return [
+            'category_id.required' => 'The category field is required.',
+            'category_id.integer' => 'The category field must be an integer.',
+            'category_id.exists' => 'The category does not exist in system.',
         ];
     }
 }
