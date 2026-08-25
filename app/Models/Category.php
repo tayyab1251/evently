@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -18,4 +19,10 @@ class Category extends Model
             set: fn(string $value) => strtolower($value),
         );
     }
+
+    // a category can have many events so defining a hasMany relationship
+    public function events():HasMany
+    {
+        return $this->hasMany(Event::class);
+    } 
 }
