@@ -81,7 +81,7 @@
 
                         <div class="text-muted small mt-1">
                             <i class="bi bi-clock me-1"></i>
-                            {{ $event->start_at }}
+                            {{ $event->end_at }}
                         </div>
                     </td>
 
@@ -184,7 +184,7 @@
 
 
                             {{-- Edit --}}
-                            <a href="#" class="btn btn-icon btn-lime-primary" title="Edit event">
+                            <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-icon btn-lime-primary" title="Edit event">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
 
