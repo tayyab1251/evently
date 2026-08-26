@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Events;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Event\CreateEventRequest;
+use App\Http\Requests\Event\UpdateEventRequest;
 use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -72,15 +73,39 @@ class EventController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $categories = Category::all();
+        $event = Event::findOrFail($id);
+        return view('dashboard.events.edit', compact(['event', 'categories']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateEventRequest $request, string $id)
     {
-        //
+        try {
+            $event = Event::findOrFail($id);
+
+            $event->update($request->validated());
+
+            Swal::success([
+                'title' => 'Successfully Updated!',
+                'text' => 'Event updated successfully.',
+            ]);
+
+            return redirect()->route('admin.events.index');
+        } catch (\Exception $ex) {
+
+            report($ex);
+
+            Swal::error([
+                'title' => 'Failed Update!',
+                // 'text' => $ex->getMessage(),
+                'text' => 'Failed to update event.',
+            ]);
+
+            return redirect()->back()->withInput();
+        }
     }
 
     /**
