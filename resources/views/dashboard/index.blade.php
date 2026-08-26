@@ -2,6 +2,14 @@
 
 @section('title', 'Dashboard')
 
+@push('styles')
+
+@vite([
+'resources/assets/libs/datatables/css/dataTables.bootstrap5.min.css',
+'resources/assets/libs/datatables/css/buttons.bootstrap5.min.css',
+'resources/assets/libs/datatables/css/select.bootstrap5.min.css',
+])
+@endpush
 
 @section('content')
 
@@ -19,80 +27,86 @@
 </div>
 <!-- END: Dashboard Header Banner -->
 
-<!-- START: Main Layout Grid (2 Columns: Dashboard + Performance Pane) -->
-<div class="row g-4">
-  <!-- Responsive Table Wrapper -->
+<!-- START: DataTables with Buttons Card Container -->
+<div class="card p-4 shadow-sm border-0 mb-4">
   <div class="table-responsive">
-    <table class="table-custom">
+    <table id="basic-datatable" class="table table-hover align-middle w-100">
       <thead>
         <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>Product Info</th>
+          <th>Event Name</th>
           <th>Category</th>
-          <th>Amount</th>
-          <th>Order Date</th>
+          <th>Location</th>
+          <th>Type</th>
+          <th>Start</th>
           <th>Status</th>
-          <th class="text-center">Actions</th>
         </tr>
       </thead>
+      @if(count($latestEvents) > 0)
       <tbody>
-        <!-- Row 1 -->
+        @foreach($latestEvents as $event)
         <tr>
-          <td class="table-order-id">#ORD-9982</td>
+          <td>{{$event->name}}</td>
+          <td>{{$event->category->name}}</td>
+          <td>{{$event->location_name}}</td>
+          <td>{{$event->type}}</td>
+          <td>{{$event->start_at}}</td>
           <td>
-            <div class="table-user-cell">
-              <img src="{{Vite::asset('resources/assets/images/user_1.jpg')}}" alt="Eleanor Pena" class="table-user-avatar"
-                onerror="this.src='assets/images/avatar.png'">
-              <div>
-                <div class="table-user-name">Eleanor Pena</div>
-                <div class="table-user-sub">eleanor.pena@example.com</div>
-              </div>
-            </div>
-          </td>
-          <td class="table-product-name">Oversized Hoodie</td>
-          <td>Apparel</td>
-          <td class="table-amount">$89.90</td>
-          <td>Feb 14, 2026</td>
-          <td><span class="badge-table success">Paid</span></td>
-          <td>
-            <div class="d-flex justify-content-center gap-1">
-              <a href="#" class="table-btn-action" title="View details"><i class="bi bi-eye"></i></a>
-              <a href="#" class="table-btn-action" title="Edit row"><i class="bi bi-pencil"></i></a>
-              <a href="#" class="table-btn-action delete" title="Delete row"><i class="bi bi-trash"></i></a>
-            </div>
+
+            @switch($event->status)
+
+            @case('Upcoming')
+            <span class="badge badge-soft-primary rounded-pill px-3 py-1">
+              <span class="status-indicator-dot active me-1"></span>
+              Upcoming
+            </span>
+            @break
+
+            @case('Ongoing')
+            <span class="badge badge-soft-success rounded-pill px-3 py-1">
+              <span class="status-indicator-dot active me-1"></span>
+              Ongoing
+            </span>
+            @break
+
+            @case('Completed')
+            <span class="badge badge-soft-forest rounded-pill px-3 py-1">
+              Completed
+            </span>
+            @break
+
+            @default
+            <span class="badge badge-soft-warning rounded-pill px-3 py-1">
+              {{ $event->status }}
+            </span>
+
+            @endswitch
+
           </td>
         </tr>
-        <!-- Row 2 -->
-        <tr>
-          <td class="table-order-id">#ORD-9981</td>
-          <td>
-            <div class="table-user-cell">
-              <img src="{{Vite::asset('resources/assets/images/user_2.jpg')}}" alt="Wade Warren" class="table-user-avatar"
-                onerror="this.src='assets/images/avatar.png'">
-              <div>
-                <div class="table-user-name">Wade Warren</div>
-                <div class="table-user-sub">wade.warren@example.com</div>
-              </div>
-            </div>
-          </td>
-          <td class="table-product-name">Gaming Console</td>
-          <td>Electronics</td>
-          <td class="table-amount">$499.00</td>
-          <td>Feb 13, 2026</td>
-          <td><span class="badge-table pending">Processing</span></td>
-          <td>
-            <div class="d-flex justify-content-center gap-1">
-              <a href="#" class="table-btn-action" title="View details"><i class="bi bi-eye"></i></a>
-              <a href="#" class="table-btn-action" title="Edit row"><i class="bi bi-pencil"></i></a>
-              <a href="#" class="table-btn-action delete" title="Delete row"><i class="bi bi-trash"></i></a>
-            </div>
-          </td>
-        </tr>       
+        @endforeach
       </tbody>
+      @endif
     </table>
   </div>
 </div>
-<!-- END: Main Layout Grid -->
+<!-- END: DataTables with Buttons Card Container -->
+@push('scripts')
 
+@vite([
+'resources/assets/libs/datatables/js/jquery.dataTables.min.js',
+'resources/assets/libs/datatables/js/dataTables.bootstrap5.min.js',
+'resources/assets/libs/jszip/jszip.min.js',
+'resources/assets/libs/pdfmake/pdfmake.min.js',
+'resources/assets/libs/pdfmake/vfs_fonts.js',
+'resources/assets/libs/datatables/js/dataTables.buttons.min.js',
+'resources/assets/libs/datatables/js/buttons.bootstrap5.min.js',
+'resources/assets/libs/datatables/js/buttons.html5.min.js',
+'resources/assets/libs/datatables/js/buttons.print.min.js',
+'resources/assets/libs/datatables/js/buttons.colVis.min.js',
+'resources/assets/libs/datatables/js/dataTables.select.min.js',
+'resources/assets/libs/lucide/lucide.min.js',
+'resources/assets/js/datatables-init.js',
+])
+
+@endpush
 @endsection

@@ -11,6 +11,9 @@
         @yield('title', 'Dashboard')
     </title>
 
+    {{-- Page specific CSS will load here --}}
+    @stack('styles')
+
     {{-- Dashboard CSS --}}
     @include('dashboard.includes.dashboard-css')
 
@@ -37,14 +40,14 @@
 
     </div>
 
+    {{-- Page-specific JavaScript --}}
+    @stack('scripts')
+
     {{-- SweetAlert2 --}}
     @include('sweetalert2::index')
 
     {{-- Dashboard JavaScript --}}
     @include('dashboard.includes.dashboard-js')
-
-    {{-- Page-specific JavaScript --}}
-    @stack('scripts')
 
 </body>
 
