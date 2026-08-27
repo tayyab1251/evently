@@ -79,7 +79,7 @@
           class="navbar-profile-img">
 
         <span class="navbar-profile-name d-none d-md-inline">
-          Administrator
+          {{auth()->user()->name}}
         </span>
 
         <i class="bi bi-chevron-down navbar-profile-caret"></i>

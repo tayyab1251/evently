@@ -39,7 +39,7 @@ START: Sidebar Component (V1 routes + V2 accordion structure)
                 {{-- Events Accordion --}}
                 <li class="sidebar-menu-item">
                     <a href="#menu-events"
-                        class="sidebar-menu-link {{ request()->routeIs('admin.events.*') ? '' : 'collapsed' }}"
+                        class="sidebar-menu-link {{ request()->routeIs('admin.events.*') ? '' : 'collapsed' }} {{ request()->routeIs('admin.events.*') ? 'active' : '' }}"
                         data-bs-toggle="collapse" role="button"
                         aria-expanded="{{ request()->routeIs('admin.events.*') ? 'true' : 'false' }}"
                         aria-controls="menu-events" id="menu-events-header">
@@ -263,8 +263,8 @@ START: Sidebar Component (V1 routes + V2 accordion structure)
             class="sidebar-profile-img"
             onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256&auto=format&fit=crop'">
         <div class="sidebar-profile-info">
-            <div class="sidebar-profile-name">Administrator</div>
-            <div class="sidebar-profile-email">admin@email.com</div>
+            <div class="sidebar-profile-name">{{auth()->user()->name}}</div>
+            <div class="sidebar-profile-email">{{ auth()->user()->email }}</div>
         </div>
     </div>
 
