@@ -34,7 +34,7 @@ class UpdateEventRequest extends FormRequest
 
             'address' => ['required', 'string', 'min:5', 'max:500',],
 
-            'city' => ['required', 'string', 'min:2', 'max:100'],
+            'city_id' => ['required'],
 
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
 
@@ -65,6 +65,8 @@ class UpdateEventRequest extends FormRequest
             'category_id.required' => 'The category field is required.',
             'category_id.integer' => 'The category field must be an integer.',
             'category_id.exists' => 'The category does not exist in system.',
+
+            'city_id.required'  => 'The city field is required.',
         ];
     }
 }

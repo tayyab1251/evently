@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Event\CreateEventRequest;
 use App\Http\Requests\Event\UpdateEventRequest;
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use SweetAlert2\Laravel\Swal;
@@ -27,8 +28,10 @@ class EventController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $cities = City::all();
+        // dd($cities);
         // dd($categories);
-        return view('dashboard.events.create', compact('categories'));
+        return view('dashboard.events.create', compact('categories', 'cities'));
     }
 
     /**
@@ -50,9 +53,10 @@ class EventController extends Controller
             return redirect()->route('admin.events.index');
         } catch (\Exception $ex) {
             report($ex->getMessage());
+
             Swal::error([
                 'title' => 'Something went wrong!',
-                'text' => 'Failed to create event',
+                'text' => 'Failed to create event.',
             ]);
 
             return redirect()->back()->withInput();
@@ -74,8 +78,9 @@ class EventController extends Controller
     public function edit(string $id)
     {
         $categories = Category::all();
+        $cities     = City::all();
         $event = Event::findOrFail($id);
-        return view('dashboard.events.edit', compact(['event', 'categories']));
+        return view('dashboard.events.edit', compact(['event', 'categories','cities']));
     }
 
     /**
@@ -125,6 +130,9 @@ class EventController extends Controller
 
             return redirect()->back();
         } catch (\Exception $ex) {
+
+            report($ex);
+
             Swal::error([
                 'title' => 'Deletion Failed!',
                 'text'  => 'Failed to delete the event.'

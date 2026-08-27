@@ -58,7 +58,7 @@
                                 {{ $category->name }}
                             </option>
                             @endforeach
-                            
+
                             {{-- <option value="111">Test</option> --}}
 
                         </select>
@@ -130,16 +130,46 @@
                     </div>
 
                     <!-- City -->
-                    <div class="mb-0">
+                    {{-- <div class="mb-0">
 
                         <label for="city" class="form-label-custom">
                             City
                         </label>
 
-                        <input type="text" class="form-control-custom" name="city" id="city" value="{{ old('city') }}"
-                            placeholder="Enter city">
+                        <input type="text" class="form-control-custom" name="city_id" id="city"
+                            value="{{ old('city_id') }}" placeholder="Enter city">
 
-                        @error('city')
+                        @error('city_id')
+                        <div class="form-feedback-custom invalid-custom">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            {{ $message }}
+                        </div>
+                        @enderror
+
+                    </div> --}}
+                    <div class="mb-0">
+
+                        <label for="city_id" class="form-label-custom">
+                            City
+                        </label>
+
+                        <select class="form-select-custom" name="city_id" id="city_id">
+                            <option selected disabled>
+                                Choose Event City...
+                            </option>
+
+                            @foreach ($cities as $city)
+                            <option value="{{ $city->id }}" {{ old('city_id')==$city->id ? 'selected' : '' }}
+                                >
+                                {{ $city->name }}
+                            </option>
+                            @endforeach
+
+                            {{-- <option value="111">Test</option> --}}
+
+                        </select>
+
+                        @error('category_id')
                         <div class="form-feedback-custom invalid-custom">
                             <i class="bi bi-exclamation-circle-fill"></i>
                             {{ $message }}

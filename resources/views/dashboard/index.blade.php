@@ -48,7 +48,7 @@
           <td>{{$event->name}}</td>
           <td>{{$event->category->name}}</td>
           <td>{{$event->location_name}}</td>
-          <td>{{$event->type}}</td>
+          <td><span class="badge badge-outline-forest rounded-pill px-3 py-1">{{$event->type}}</span></td>
           <td>{{$event->start_at}}</td>
           <td>
 
