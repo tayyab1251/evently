@@ -15,7 +15,7 @@ class Event extends Model
         'description',
         'location_name',
         'address',
-        'city',
+        'city_id',
         'latitude',
         'longitude',
         'map_url',

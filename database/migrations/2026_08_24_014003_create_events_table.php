@@ -27,7 +27,8 @@ return new class extends Migration
 
             $table->string('address', 500);
 
-            $table->string('city', 100);
+            // $table->string('city', 100);
+            $table->foreignId('city_id')->constrained('cities','id')->restrictOnDelete();
 
             $table->decimal('latitude', 10, 7)->nullable();
 
