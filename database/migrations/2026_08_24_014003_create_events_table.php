@@ -30,9 +30,9 @@ return new class extends Migration
             // $table->string('city', 100);
             $table->foreignId('city_id')->constrained('cities','id')->restrictOnDelete();
 
-            $table->decimal('latitude', 10, 7)->nullable();
+            $table->string('primary_image', 255)->nullable();
 
-            $table->decimal('longitude', 10, 7)->nullable();
+            $table->string('cover_image', 255)->nullable();
 
             $table->string('map_url', 2048)->nullable();
 

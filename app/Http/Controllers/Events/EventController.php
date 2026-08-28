@@ -39,10 +39,24 @@ class EventController extends Controller
      */
     public function store(CreateEventRequest $request)
     {
-        // dd($request);   
+        // dd($request);
         $eventData = $request->validated();
 
+        if (! $request->hasFile('primary_image') ||  !$request->hasFile('cover_image')) {
+            Swal::error([
+                'title' => 'Images Missing!',
+                'text' => 'Images fields are required to create an event, Please upload both images and try Again !',
+            ]);
+
+            return redirect()->back()->withInput();
+        }
+
+        // store images first
         try {
+
+            $eventData['primary_image'] = $request->file('primary_image')->store('events', 'public');
+            $eventData['cover_image']   = $request->file('cover_image')->store('events', 'public');
+            // dd($eventData);
             Event::create($eventData);
 
             Swal::success([
@@ -80,7 +94,7 @@ class EventController extends Controller
         $categories = Category::all();
         $cities     = City::all();
         $event = Event::findOrFail($id);
-        return view('dashboard.events.edit', compact(['event', 'categories','cities']));
+        return view('dashboard.events.edit', compact(['event', 'categories', 'cities']));
     }
 
     /**

@@ -2,13 +2,61 @@
 
 @section('title', 'Create Event')
 
+@push('styles')
+<style>
+    .dropzone-box {
+        position: relative;
+        min-height: 220px;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .dropzone-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 220px;
+        text-align: center;
+    }
+
+    .image-preview {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+    }
+
+    .preview-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .remove-image-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+        cursor: pointer;
+        z-index: 2;
+    }
+</style>
+@endpush
+
 @section('content')
 
 <!-- START: Create Event -->
 
 <div class="card p-4 border-light shadow-sm">
 
-    <form action="{{ route('admin.events.store') }}" method="POST">
+    <form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data">
 
         @csrf
 
@@ -53,7 +101,8 @@
                             </option>
 
                             @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category')==$category->id ? 'selected' : '' }}
+                            <option value="{{ $category->id }}" {{ old('category_id')==$category->id ? 'selected' : ''
+                                }}
                                 >
                                 {{ $category->name }}
                             </option>
@@ -147,7 +196,7 @@
                         @enderror
 
                     </div> --}}
-                    <div class="mb-0">
+                    <div class="mb-3">
 
                         <label for="city_id" class="form-label-custom">
                             City
@@ -169,12 +218,55 @@
 
                         </select>
 
-                        @error('category_id')
+                        @error('city_id')
                         <div class="form-feedback-custom invalid-custom">
                             <i class="bi bi-exclamation-circle-fill"></i>
                             {{ $message }}
                         </div>
                         @enderror
+
+                    </div>
+
+                    {{-- Primary Image --}}
+                    <div class="mb-0">
+
+                        <label for="primary_image" class="form-label-custom">
+                            Primary Image
+                        </label>
+
+                        <div class="dropzone-box" id="primaryDropzone">
+
+                            <input type="file" id="primary_image" name="primary_image" class="d-none"
+                                accept="image/png,image/jpeg">
+
+                            <div class="dropzone-content">
+
+                                <div class="dropzone-icon-box">
+                                    <i class="bi bi-cloud-arrow-up"></i>
+                                </div>
+
+                                <h6 class="fw-bold text-main mb-1">
+                                    Drop image here or click to upload
+                                </h6>
+
+                                <p class="text-muted-green small mb-0">
+                                    PNG, JPG up to 2MB
+                                </p>
+
+                            </div>
+
+                            {{-- Image Preview --}}
+                            <div class="image-preview d-none">
+
+                                <img src="" alt="Primary Image Preview" class="preview-image">
+
+                                <button type="button" class="remove-image-btn">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
@@ -190,6 +282,7 @@
 
                     <h5 class="card-title mb-4">Event Details</h5>
 
+                    {{--
                     <!-- Latitude -->
                     <div class="mb-3">
 
@@ -226,7 +319,7 @@
                         </div>
                         @enderror
 
-                    </div>
+                    </div> --}}
 
                     <!-- Google Maps URL -->
                     <div class="mb-3">
@@ -348,7 +441,7 @@
                     </div>
 
                     <!-- Max Attendees -->
-                    <div class="mb-0">
+                    <div class="mb-3">
 
                         <label for="max_attendees" class="form-label-custom">
                             Max Attendees
@@ -369,10 +462,53 @@
                         @enderror
 
                     </div>
+                    {{-- Cover Photo --}}
+                    <div class="mb-0">
+
+                        <label for="cover_image" class="form-label-custom">
+                            Cover Photo
+                        </label>
+
+                        <div class="dropzone-box" id="coverDropzone">
+
+                            <input type="file" id="cover_image" name="cover_image" class="d-none"
+                                accept="image/png,image/jpeg">
+
+                            <div class="dropzone-content">
+
+                                <div class="dropzone-icon-box">
+                                    <i class="bi bi-cloud-arrow-up"></i>
+                                </div>
+
+                                <h6 class="fw-bold text-main mb-1">
+                                    Drop image here or click to upload
+                                </h6>
+
+                                <p class="text-muted-green small mb-0">
+                                    PNG, JPG up to 2MB
+                                </p>
+
+                            </div>
+
+                            {{-- Image Preview --}}
+                            <div class="image-preview d-none">
+
+                                <img src="" alt="Cover Photo Preview" class="preview-image">
+
+                                <button type="button" class="remove-image-btn">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
+
 
         </div>
 
@@ -396,3 +532,179 @@
 <!-- END: Create Event -->
 
 @endsection
+@push('scripts')
+<script>
+    function setupImageDropzone(dropzoneId, inputId) {
+
+        const dropzone = document.getElementById(dropzoneId);
+        const input = document.getElementById(inputId);
+
+        const content = dropzone.querySelector(".dropzone-content");
+        const preview = dropzone.querySelector(".image-preview");
+        const previewImage = dropzone.querySelector(".preview-image");
+        const removeButton = dropzone.querySelector(".remove-image-btn");
+
+        let imageUrl = null;
+
+
+        function handleFile(file) {
+
+            if (!file) {
+                return;
+            }
+
+
+            // Validate type
+            if (!["image/jpeg", "image/png"].includes(file.type)) {
+
+                alert("Only JPG and PNG images are allowed.");
+
+                input.value = "";
+
+                return;
+            }
+
+
+            // Validate size
+            if (file.size > 2 * 1024 * 1024) {
+
+                alert("Image size must be less than 2MB.");
+
+                input.value = "";
+
+                return;
+            }
+
+
+            // Remove old object URL
+            if (imageUrl) {
+                URL.revokeObjectURL(imageUrl);
+            }
+
+
+            // Create preview URL
+            imageUrl = URL.createObjectURL(file);
+
+            previewImage.src = imageUrl;
+
+
+            // Hide upload content
+            content.classList.add("d-none");
+
+            // Show preview
+            preview.classList.remove("d-none");
+        }
+
+
+        // Click -> file picker
+        dropzone.addEventListener("click", function () {
+
+            input.click();
+
+        });
+
+
+        // File selected
+        input.addEventListener("change", function () {
+
+            handleFile(this.files[0]);
+
+        });
+
+
+        // Drag events
+        ["dragenter", "dragover"].forEach(function (eventName) {
+
+            dropzone.addEventListener(eventName, function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                dropzone.classList.add("drag-over");
+
+            });
+
+        });
+
+
+        ["dragleave", "drop"].forEach(function (eventName) {
+
+            dropzone.addEventListener(eventName, function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                dropzone.classList.remove("drag-over");
+
+            });
+
+        });
+
+
+        // Drop
+        dropzone.addEventListener("drop", function (e) {
+
+            const files = e.dataTransfer.files;
+
+            if (files.length > 0) {
+
+                handleFile(files[0]);
+
+                /*
+                 * Important:
+                 * Browser security prevents us from directly assigning
+                 * DataTransfer files to input in some cases.
+                 * For normal upload flow, use DataTransfer if needed.
+                 */
+
+                const dataTransfer = new DataTransfer();
+
+                dataTransfer.items.add(files[0]);
+
+                input.files = dataTransfer.files;
+            }
+
+        });
+
+
+        // Remove image
+        removeButton.addEventListener("click", function (e) {
+
+            e.stopPropagation();
+
+            input.value = "";
+
+            previewImage.src = "";
+
+            preview.classList.add("d-none");
+
+            content.classList.remove("d-none");
+
+
+            if (imageUrl) {
+
+                URL.revokeObjectURL(imageUrl);
+
+                imageUrl = null;
+            }
+
+        });
+
+    }
+
+
+    // Primary Image
+    setupImageDropzone(
+        "primaryDropzone",
+        "primary_image"
+    );
+
+
+    // Cover Photo
+    setupImageDropzone(
+        "coverDropzone",
+        "cover_image"
+    );
+
+</script>
+@endpush
