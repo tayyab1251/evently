@@ -33,6 +33,8 @@
     <table id="basic-datatable" class="table table-hover align-middle w-100">
       <thead>
         <tr>
+          <th>#</th>
+          <th>Image</th>
           <th>Event Name</th>
           <th>Category</th>
           <th>Location</th>
@@ -45,6 +47,13 @@
       <tbody>
         @foreach($latestEvents as $event)
         <tr>
+          <td>{{$loop->iteration}}</td>
+          <td>
+          <img src="{{ $event->primary_image
+                                        ? asset('storage/' . $event->primary_image)
+                                        : asset('images/default_image.png') }}" alt="{{ $event->name }}"
+            class="rounded-2 object-fit-cover flex-shrink-0" width="50" height="50">
+            </td>
           <td>{{$event->name}}</td>
           <td>{{$event->category->name}}</td>
           <td>{{$event->location_name}}</td>

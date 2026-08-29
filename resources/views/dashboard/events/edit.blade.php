@@ -8,7 +8,7 @@
 
 <div class="card p-4 border-light shadow-sm">
 
-    <form action="{{ route('admin.events.update', $event->id) }}" method="POST">
+    <form action="{{ route('admin.events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
 
         @csrf
         @method('PUT')
@@ -159,7 +159,7 @@
 
                     </div> --}}
 
-                    <div class="mb-0">
+                    <div class="mb-3">
 
                         <label for="city_id" class="form-label-custom">
                             City
@@ -192,6 +192,52 @@
 
                     </div>
 
+                    {{-- Primary Image --}}
+                    <div class="mb-0">
+
+                        <label for="primary_image" class="form-label-custom">
+                            Primary Image
+                        </label>
+
+                        <div class="dropzone-box" id="primaryDropzone">
+
+                            <input type="file" id="primary_image" name="primary_image" class="d-none"
+                                accept="image/png,image/jpeg">
+
+                            <div class="dropzone-content">
+
+                                <div class="dropzone-icon-box">
+                                    <i class="bi bi-cloud-arrow-up"></i>
+                                </div>
+
+                                <h6 class="fw-bold text-main mb-1">
+                                    Drop image here or click to upload
+                                </h6>
+
+                                <p class="text-muted-green small mb-0">
+                                    PNG, JPG up to 2MB
+                                </p>
+
+                            </div>
+
+                            {{-- Image Preview --}}
+                            <div class="image-preview d-none">
+
+                                <img src="{{ $event->primary_image
+                                        ? asset('storage/' . $event->primary_image)
+                                        : asset('images/default_image.png') }}" alt="{{ $event->name }}"
+                                    alt="Primary Image Preview" class="preview-image">
+
+                                <button type="button" class="remove-image-btn">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
 
                 </div>
 
@@ -208,7 +254,7 @@
 
                     <!-- Latitude -->
 
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
 
                         <label for="latitude" class="form-label-custom">
                             Latitude
@@ -244,7 +290,7 @@
                         </div>
                         @enderror
 
-                    </div>
+                    </div> --}}
 
                     <!-- Google Maps URL -->
 
@@ -381,7 +427,7 @@
 
                     <!-- Max Attendees -->
 
-                    <div class="mb-0">
+                    <div class="mb-3">
 
                         <label for="max_attendees" class="form-label-custom">
                             Max Attendees
@@ -403,6 +449,53 @@
                         @enderror
 
                     </div>
+
+                    {{-- Cover Photo --}}
+                    <div class="mb-0">
+
+                        <label for="cover_image" class="form-label-custom">
+                            Cover Photo
+                        </label>
+
+                        <div class="dropzone-box" id="coverDropzone">
+
+                            <input type="file" id="cover_image" name="cover_image" class="d-none"
+                                accept="image/png,image/jpeg">
+
+                            <div class="dropzone-content">
+
+                                <div class="dropzone-icon-box">
+                                    <i class="bi bi-cloud-arrow-up"></i>
+                                </div>
+
+                                <h6 class="fw-bold text-main mb-1">
+                                    Drop image here or click to upload
+                                </h6>
+
+                                <p class="text-muted-green small mb-0">
+                                    PNG, JPG up to 2MB
+                                </p>
+
+                            </div>
+
+                            {{-- Image Preview --}}
+                            <div class="image-preview d-none">
+
+                                <img src="{{ $event->cover_image
+                                        ? asset('storage/' . $event->cover_image)
+                                        : asset('images/default_image.png') }}" alt="Cover Photo Preview"
+                                    class="preview-image">
+
+                                <button type="button" class="remove-image-btn">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
 
                 </div>
 
@@ -432,3 +525,236 @@
 <!-- END: Edit Event -->
 
 @endsection
+
+@push('scripts')
+<script>
+    function setupImageDropzone(dropzoneId, inputId) {
+
+        const dropzone = document.getElementById(dropzoneId);
+        const input = document.getElementById(inputId);
+
+        const content = dropzone.querySelector(".dropzone-content");
+        const preview = dropzone.querySelector(".image-preview");
+        const previewImage = dropzone.querySelector(".preview-image");
+        const removeButton = dropzone.querySelector(".remove-image-btn");
+
+        let imageUrl = null;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Existing Image
+        |--------------------------------------------------------------------------
+        */
+
+        if (previewImage.src && previewImage.src.trim() !== "") {
+
+            content.classList.add("d-none");
+            preview.classList.remove("d-none");
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Handle New File
+        |--------------------------------------------------------------------------
+        */
+
+        function handleFile(file) {
+
+            if (!file) {
+                return;
+            }
+
+
+            // Validate type
+            if (!["image/jpeg", "image/png"].includes(file.type)) {
+
+                alert("Only JPG and PNG images are allowed.");
+
+                input.value = "";
+
+                return;
+            }
+
+
+            // Validate size
+            if (file.size > 2 * 1024 * 1024) {
+
+                alert("Image size must be less than 2MB.");
+
+                input.value = "";
+
+                return;
+            }
+
+
+            // Remove previous object URL
+            if (imageUrl) {
+                URL.revokeObjectURL(imageUrl);
+            }
+
+
+            // Create preview URL
+            imageUrl = URL.createObjectURL(file);
+
+            previewImage.src = imageUrl;
+
+
+            // Hide upload content
+            content.classList.add("d-none");
+
+            // Show preview
+            preview.classList.remove("d-none");
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Click → File Picker
+        |--------------------------------------------------------------------------
+        */
+
+        dropzone.addEventListener("click", function () {
+
+            input.click();
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | File Selected
+        |--------------------------------------------------------------------------
+        */
+
+        input.addEventListener("change", function () {
+
+            handleFile(this.files[0]);
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Drag Enter / Over
+        |--------------------------------------------------------------------------
+        */
+
+        ["dragenter", "dragover"].forEach(function (eventName) {
+
+            dropzone.addEventListener(eventName, function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                dropzone.classList.add("drag-over");
+
+            });
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Drag Leave / Drop
+        |--------------------------------------------------------------------------
+        */
+
+        ["dragleave", "drop"].forEach(function (eventName) {
+
+            dropzone.addEventListener(eventName, function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                dropzone.classList.remove("drag-over");
+
+            });
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Drop
+        |--------------------------------------------------------------------------
+        */
+
+        dropzone.addEventListener("drop", function (e) {
+
+            const files = e.dataTransfer.files;
+
+            if (files.length > 0) {
+
+                handleFile(files[0]);
+
+                const dataTransfer = new DataTransfer();
+
+                dataTransfer.items.add(files[0]);
+
+                input.files = dataTransfer.files;
+
+            }
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Remove Image
+        |--------------------------------------------------------------------------
+        */
+
+        removeButton.addEventListener("click", function (e) {
+
+            e.stopPropagation();
+
+            input.value = "";
+
+            previewImage.src = "";
+
+            preview.classList.add("d-none");
+
+            content.classList.remove("d-none");
+
+
+            if (imageUrl) {
+
+                URL.revokeObjectURL(imageUrl);
+
+                imageUrl = null;
+
+            }
+
+        });
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Primary Image
+    |--------------------------------------------------------------------------
+    */
+
+    setupImageDropzone(
+        "primaryDropzone",
+        "primary_image"
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cover Image
+    |--------------------------------------------------------------------------
+    */
+
+    setupImageDropzone(
+        "coverDropzone",
+        "cover_image"
+    );
+
+</script>
+@endpush

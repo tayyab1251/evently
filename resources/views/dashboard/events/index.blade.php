@@ -33,6 +33,8 @@
 
             <thead>
                 <tr>
+                    <th>#</th>
+                    <th>Image</th>
                     <th>Event</th>
                     <th>Category</th>
                     <th>Schedule</th>
@@ -50,12 +52,37 @@
                 @foreach($events as $event)
 
                 <tr>
+                    <td>
+                        <div class="fw-semibold text-main">
+                        <span class="text-muted small mt-1">
+                            #{{$loop->iteration }}
+                        </span>
+                    </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+
+                            <img src="{{ $event->primary_image
+                                        ? asset('storage/' . $event->primary_image)
+                                        : asset('images/default_image.png') }}" alt="{{ $event->name }}"
+                                class="rounded-2 object-fit-cover flex-shrink-0" width="50" height="50">
+
+                            {{-- <div class="fw-semibold text-main">
+                                <span class="text-muted small mt-1">
+                                    #{{ $loop->iteration }}
+                                </span>
+                                &nbsp;
+                                {{ $event->name }}
+                            </div> --}}
+
+                        </div>
+                    </td>
 
                     {{-- Event --}}
                     <td>
                         <div class="fw-semibold text-main">
                             <span class="text-muted small mt-1">
-                                #{{$loop->iteration }}
+                                {{-- #{{$loop->iteration }} --}}
                                 {{-- #{{ $event->id }} --}}
                             </span> &nbsp; {{ $event->name }}
                         </div>
@@ -184,7 +211,8 @@
 
 
                             {{-- Edit --}}
-                            <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-icon btn-lime-primary" title="Edit event">
+                            <a href="{{ route('admin.events.edit', $event->id) }}" class="btn btn-icon btn-lime-primary"
+                                title="Edit event">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>
 
@@ -203,7 +231,7 @@
                     </td>
 
                 </tr>
-               
+
                 @endforeach
 
             </tbody>

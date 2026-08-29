@@ -36,9 +36,9 @@ class UpdateEventRequest extends FormRequest
 
             'city_id' => ['required'],
 
-            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            // 'latitude' => ['nullable', 'numeric', 'between:-90,90'],
 
-            'longitude' => ['nullable', 'numeric', 'between:-180,180',],
+            // 'longitude' => ['nullable', 'numeric', 'between:-180,180',],
 
             'map_url' => ['nullable', 'url', 'max:2048'],
 
@@ -51,6 +51,10 @@ class UpdateEventRequest extends FormRequest
             'end_at' => ['required', 'date', 'after:start_at'],
 
             'max_attendees' => ['required', 'integer', 'min:1', 'max:1000000',],
+
+            'primary_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+
+            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 

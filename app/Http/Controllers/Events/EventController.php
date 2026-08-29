@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use SweetAlert2\Laravel\Swal;
 
 class EventController extends Controller
@@ -18,7 +19,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
+        $events = Event::orderBy('created_at', 'desc')->get();
         return view('dashboard/events/index', compact('events'));
     }
 
@@ -103,9 +104,34 @@ class EventController extends Controller
     public function update(UpdateEventRequest $request, string $id)
     {
         try {
+            // dd($request);
             $event = Event::findOrFail($id);
 
-            $event->update($request->validated());
+            // old images
+            $oldPrimaryImage = $event->primary_image;
+            $oldCoverImage = $event->cover_image;
+
+            $eventData = $request->validated();
+
+            if ($request->hasFile('primary_image')) {
+                $eventData['primary_image'] = $request->file('primary_image')->store('events', 'public');
+            }
+
+            if ($request->hasFile('cover_image')) {
+                $eventData['cover_image'] = $request->file('cover_image')->store('events', 'public');
+            }
+
+            // update validated data in db
+            $event->update($eventData);
+
+
+            if ($request->hasFile('primary_image') &&  $oldPrimaryImage) {
+                Storage::disk('public')->delete($oldPrimaryImage);
+            }
+
+            if ($request->hasFile('cover_image') &&  $oldCoverImage) {
+                Storage::disk('public')->delete($oldCoverImage);
+            }
 
             Swal::success([
                 'title' => 'Successfully Updated!',
