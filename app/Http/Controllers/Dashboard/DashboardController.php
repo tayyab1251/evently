@@ -11,7 +11,7 @@ class DashboardController extends Controller
     // method to load latestEvents
     public function loadLatestEvents()
     {
-        $latestEvents = Event::latest()->take(5)->get();
+        $latestEvents = Event::orderBy('created_at')->latest()->take(5)->get();
         // dd($latestEvents);
         return view('dashboard.index', compact('latestEvents'));
     }
