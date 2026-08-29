@@ -462,6 +462,44 @@
                         @enderror
 
                     </div>
+                    <div class="mb-3">
+
+                        <label for="is_featured" class="form-label-custom">
+                            Is Featured &nbsp;
+                            <small class="title- text-primary">
+                                (Set as featured on homesite)
+                            </small>
+                        </label>
+
+                        <div class="input-group-custom">
+
+                            <select class="form-select-custom" name="is_featured" id="is_featured">
+
+                                <option value="" selected disabled>
+                                    Choose Feature ...
+                                </option>
+
+                                <option value="1" {{ old('is_featured')=='1' ? 'selected' : '' }}>
+                                    Yes
+                                </option>
+
+                                <option value="0" {{ old('is_featured')=='0' ? 'selected' : 'selected' }}>
+                                    No
+                                </option>
+
+                            </select>
+
+                            @error('is_featured')
+                            <div class="form-feedback-custom invalid-custom">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                {{ $message }}
+                            </div>
+                            @enderror
+
+                        </div>
+
+                    </div>
+
                     {{-- Cover Photo --}}
                     <div class="mb-0">
 

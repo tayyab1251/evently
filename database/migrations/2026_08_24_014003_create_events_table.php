@@ -40,6 +40,8 @@ return new class extends Migration
 
             $table->unsignedBigInteger('price')->default(0);
 
+            $table->boolean('is_featured')->default(false);
+
             $table->dateTime('start_at');
 
             $table->dateTime('end_at');

@@ -46,6 +46,9 @@ class UpdateEventRequest extends FormRequest
 
             'price' => ['required_if:type,paid', 'nullable', 'numeric', 'min:0', 'max:99999999.99'],
 
+            'is_featured' => ['nullable', 'boolean'],
+
+
             'start_at' => ['required', 'date'],
 
             'end_at' => ['required', 'date', 'after:start_at'],
@@ -71,6 +74,9 @@ class UpdateEventRequest extends FormRequest
             'category_id.exists' => 'The category does not exist in system.',
 
             'city_id.required'  => 'The city field is required.',
+
+            'is_featured' => 'The featured field value is wrong'
+
         ];
     }
 }

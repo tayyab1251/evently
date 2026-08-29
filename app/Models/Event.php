@@ -21,6 +21,7 @@ class Event extends Model
         'map_url',
         'type',
         'price',
+        'is_featured',
         'start_at',
         'end_at',
         'max_attendees'
@@ -29,7 +30,7 @@ class Event extends Model
 
 
     // an event can belongs to a one category so we have to define a belongsTo relation with category
-    public function category() : BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -97,5 +98,12 @@ class Event extends Model
             // Mutator:
             set: fn(string $price) => $price * 100,
         );
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'is_featured' => 'boolean',
+        ];
     }
 }
