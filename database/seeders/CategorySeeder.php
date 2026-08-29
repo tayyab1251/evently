@@ -16,6 +16,7 @@ class CategorySeeder extends Seeder
         Category::insert([
             ['name' => 'conferences'],
             ['name' => 'workshops'],
+            ['name' => 'business'],
             ['name' => 'seminars'],
             ['name' => 'webinars'],
             ['name' => 'meetups'],
