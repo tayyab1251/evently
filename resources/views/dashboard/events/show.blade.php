@@ -78,18 +78,15 @@
 ========================================================= --}}
 
 @if($event->cover_image)
-    <div class="mb-3 position-relative rounded-3 overflow-hidden" style="max-height: 300px;">
+    <div class="mb-3 rounded-3 overflow-hidden">
         <img 
             src="{{ $coverImage }}" 
             alt="Cover image for {{ $event->name }}"
-            class="w-100 object-fit-cover"
-            style="max-height: 300px;"
-        >
-        <div class="position-absolute bottom-0 start-0 w-100 p-3" 
-             style="background: linear-gradient(transparent, rgba(0,0,0,0.7));">
-            <h2 class="text-white fw-bold mb-0 fs-3">{{ $event->name }}</h2>
+            class="w-100 object-fit-cover"        >
         </div>
-    </div>
+        <div>
+            <h2 class="text-black fw-bold mb-3 fs-3">{{ $event->name }}</h2>
+        </div>
 @endif
 
 
@@ -362,12 +359,12 @@
                             </tr>
                         @endif
 
-                        @if($event->city)
+                        @if($event->city->name)
                             <tr>
                                 <th class="text-muted fw-normal ps-3">
                                     <i class="bi bi-geo-alt me-1"></i> City
                                 </th>
-                                <td>{{ $event->city }}</td>
+                                <td>{{ $event->city->name }}</td>
                             </tr>
                         @endif
 
@@ -441,7 +438,7 @@
                         src="{{ $primaryImage }}" 
                         alt="Primary image for {{ $event->name }}"
                         class="img-fluid rounded-2 w-100"
-                        style="object-fit: cover; max-height: 250px;"
+                        style="object-fit: cover;"
                     >
                 </div>
 

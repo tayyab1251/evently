@@ -121,7 +121,7 @@
                         </div>
 
                         <div class="text-muted small mt-1">
-                            {{ $event->city }}
+                            {{ $event->city->name }}
                         </div>
                     </td>
 
