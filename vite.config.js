@@ -15,6 +15,8 @@ export default defineConfig({
                 'resources/assets/libs/apexcharts/apexcharts.css',
                 'resources/assets/libs/flatpickr/flatpickr.min.css',
                 'resources/assets/css/main.css',
+                'resources/assets/css/site.css',
+
 
                 'resources/assets/libs/datatables/css/dataTables.bootstrap5.min.css',
                 'resources/assets/libs/datatables/css/buttons.bootstrap5.min.css',

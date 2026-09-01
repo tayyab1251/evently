@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,10 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // redirect Authenticated users to the dashboard if they try to access login/register pages
-        $middleware->redirectUsersTo('admin.dashboard');
-        // if guests then
-        $middleware->redirectGuestsTo(fn (Request $request) => route('admin.login'));
+    
+        $middleware->alias([
+            'admin' => AdminMiddleware::class,
+        ]);
+        
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
