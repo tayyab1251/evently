@@ -5,7 +5,13 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Events\EventController;
+use App\Http\Controllers\Site\Auth\UserLoginController;
+use App\Http\Controllers\Site\Auth\UserLogoutController;
+use App\Http\Controllers\Site\Auth\UserRegisterController;
+use App\Http\Controllers\Site\HomePageController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,40 +19,104 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomePageController::class, 'getFeaturedEvents'])
+    ->name('home');
+
+Route::get('/event/details/{id}', [HomePageController::class, 'getEventDetails'])
+    ->name('details');
 
 
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes
+| User Authentication Routes
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->name('admin.')->middleware('guest')->group(function () {
+// User Register
+Route::get('/register', [UserRegisterController::class, 'showUserRegisterForm'])
+    ->name('user.register');
 
-        Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/register', [UserRegisterController::class, 'store'])
+    ->name('user.register.store');
 
-        Route::post('/login', [LoginController::class, 'login'])->name('login.check');
 
-        Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+// User Login
+Route::get('/login', [UserLoginController::class, 'showUserLoginForm'])
+    ->name('user.login');
 
-        Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-    });
+Route::post('/login', [UserLoginController::class, 'userLogin'])
+    ->name('user.login.check');
+
+
+// User Logout
+Route::get('/logout', [UserLogoutController::class, 'userLogout'])
+    ->name('user.logout');
+
 
 /*
 |--------------------------------------------------------------------------
-| Protected Routes
+| User Protected Routes
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'loadLatestEvents'])->name('dashboard');
-
-    Route::resource('events', EventController::class);
-
-    // Logout
-    Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', function () {
+        return Auth::user();
+    })->name('user.dashboard');
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Admin Authentication Routes
+|--------------------------------------------------------------------------
+|
+| IMPORTANT:
+| No "guest" middleware here.
+|
+| This allows an already authenticated user to open /admin/login
+| and switch from user account to admin account.
+|
+*/
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    // Admin Login
+    Route::get('/login', [LoginController::class, 'showLoginForm'])
+        ->name('login');
+
+    Route::post('/login', [LoginController::class, 'login'])
+        ->name('login.check');
+
+    // Admin Register
+    Route::get('/register', [RegisterController::class, 'showRegisterForm'])
+        ->name('register');
+
+    Route::post('/register', [RegisterController::class, 'store'])
+        ->name('register.store');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Admin Protected Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('admin')
+    ->name('admin.')
+    ->middleware(['auth', 'admin'])
+    ->group(function () {
+
+        // Admin Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'loadLatestEvents'])
+            ->name('dashboard');
+
+        // Admin Events
+        Route::resource('events', EventController::class);
+
+        // Admin Logout
+        Route::post('/logout', [LogoutController::class, 'logout'])
+            ->name('logout');
+    });
