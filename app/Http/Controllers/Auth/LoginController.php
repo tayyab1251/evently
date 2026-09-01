@@ -20,6 +20,7 @@ class LoginController extends Controller
     {
         // Check user credentials
         $credentials = $request->validated();
+        $credentials['role'] = 'admin';
 
         if (! Auth::attempt($credentials)) {
             return back()->withErrors([
