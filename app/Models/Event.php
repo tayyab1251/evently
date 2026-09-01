@@ -106,4 +106,10 @@ class Event extends Model
             'is_featured' => 'boolean',
         ];
     }
+
+    // city
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
 }
