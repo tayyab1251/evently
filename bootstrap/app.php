@@ -19,6 +19,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
         ]);
         
+        $middleware->redirectGuestsTo(function (Request $request) {
+        return $request->is('admin/*')
+            ? route('admin.login')
+            : route('user.login');
+    });
+        
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
