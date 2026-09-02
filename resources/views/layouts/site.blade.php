@@ -35,6 +35,9 @@
     @vite('resources/assets/libs/jquery/jquery.min.js')
 
     @stack('scripts')
+    
+    {{-- SweetAlert2 --}}
+    @include('sweetalert2::index')
 </body>
 
 </html>

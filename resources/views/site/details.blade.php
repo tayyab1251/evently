@@ -66,31 +66,12 @@
                         <span class="fw-semibold">120 seats available</span>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="form-label-brand" for="ticketQty">Number of tickets</label>
-
-                        <div class="d-flex align-items-center gap-3" data-qty-stepper>
-
-                            <button type="button" class="btn btn-brand btn-brand-secondary-light" data-qty-decrement
-                                style="width:44px;padding:0;">
-                                −
-                            </button>
-
-                            <input type="number" id="ticketQty" data-qty-input class="form-control-brand text-center"
-                                value="1" min="1" max="10" style="width:70px;">
-
-                            <button type="button" class="btn btn-brand btn-brand-secondary-light" data-qty-increment
-                                style="width:44px;padding:0;">
-                                +
-                            </button>
-
-                        </div>
-                    </div>
-
-                    <a href="checkout.html" class="btn btn-brand btn-brand-primary btn-brand-lg w-100 mb-3"
-                        data-primary-cta>
+                    <form action="{{route('checkout')}}" method="get">
+                        <input type="hidden" name="event_id" value="{{$event->id}}">
+                    <button type="submit" class="btn btn-brand btn-brand-primary btn-brand-lg w-100 mb-3"data-primary-cta>
                         <i class="bi bi-ticket-perforated me-2"></i>Book Now
-                    </a>
+                    </button>
+                    </form>
                     <p class="caption text-muted-c text-center mb-0"><i class="bi bi-shield-check me-1"></i>Secure
                         checkout · Instant confirmation</p>
                 </div>
@@ -162,40 +143,3 @@
 
 @endsection
 
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-    const stepper = document.querySelector('[data-qty-stepper]');
-    const input = stepper.querySelector('[data-qty-input]');
-    const incrementButton = stepper.querySelector('[data-qty-increment]');
-    const decrementButton = stepper.querySelector('[data-qty-decrement]');
-
-    const min = Number(input.min);
-    const max = Number(input.max);
-
-    incrementButton.addEventListener('click', function () {
-
-        let quantity = Number(input.value);
-
-        if (quantity < max) {
-            quantity++;
-        }
-
-        input.value = quantity;
-    });
-
-    decrementButton.addEventListener('click', function () {
-
-        let quantity = Number(input.value);
-
-        if (quantity > min) {
-            quantity--;
-        }
-
-        input.value = quantity;
-    });
-
-});   
-</script>
-@endpush
