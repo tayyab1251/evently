@@ -173,7 +173,8 @@
                     </div>
                     <div class="text-md-center">
                         <div class="number-display text-ink">{{$UpcomingEvent->start_at}}</div>
-                        <span class="caption text-down">Total seats: {{$UpcomingEvent->max_attendees}}</span>
+                        <span class="caption text-down" style="color: green !important">Total seats: {{$UpcomingEvent->max_attendees}}</span> &nbsp;
+                        <span class="caption text-down">Available seats: {{$UpcomingEvent->remaining_attendees}}</span>
                     </div>
                     <div class="text-md-end">
                         <div class="number-display text-ink mb-2">

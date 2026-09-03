@@ -27,9 +27,11 @@ class EventSeeder extends Seeder
                 'cover_image' => 'events/default_cover.jpg',
                 'type' => 'paid',
                 'price' => 5000,
+                'is_featured' => true,
                 'start_at' => '2026-09-12 10:00:00',
                 'end_at' => '2026-09-12 17:00:00',
                 'max_attendees' => 500,
+                 'remaining_attendees' => 500
             ],
 
             [
@@ -46,22 +48,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-09-19 10:00:00',
                 'end_at' => '2026-09-19 16:00:00',
                 'max_attendees' => 80,
-            ],
-
-            [
-                'category' => 'Concerts & Music',
-                'city' => 'Islamabad',
-                'name' => 'Capital Music Night',
-                'description' => 'An evening of live music featuring emerging Pakistani artists and local bands.',
-                'location_name' => 'Jinnah Convention Centre',
-                'address' => 'Constitution Avenue, Islamabad',
-                'primary_image' => 'events/default_primary.jpg',
-                'cover_image' => 'events/default_cover.jpg',
-                'type' => 'piad',
-                'price' => 2500,
-                'start_at' => '2026-09-25 19:00:00',
-                'end_at' => '2026-09-25 23:00:00',
-                'max_attendees' => 1000,
+                 'remaining_attendees' => 80
             ],
 
             [
@@ -78,6 +65,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-09-28 18:00:00',
                 'end_at' => '2026-09-28 21:00:00',
                 'max_attendees' => 150,
+                 'remaining_attendees' => 150
             ],
 
             [
@@ -94,6 +82,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-10-03 11:00:00',
                 'end_at' => '2026-10-03 15:00:00',
                 'max_attendees' => 300,
+                 'remaining_attendees' => 300
             ],
 
             [
@@ -110,6 +99,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-10-10 09:00:00',
                 'end_at' => '2026-10-11 18:00:00',
                 'max_attendees' => 500,
+                 'remaining_attendees' => 500
             ],
 
             [
@@ -123,9 +113,11 @@ class EventSeeder extends Seeder
                 'cover_image' => 'events/default_cover.jpg',
                 'type' => 'paid',
                 'price' => 500,
+                'is_featured' => true,
                 'start_at' => '2026-10-15 11:00:00',
                 'end_at' => '2026-10-18 20:00:00',
                 'max_attendees' => 400,
+                 'remaining_attendees' => 400
             ],
 
             [
@@ -142,6 +134,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-10-23 16:00:00',
                 'end_at' => '2026-10-25 23:00:00',
                 'max_attendees' => 2000,
+                 'remaining_attendees' => 2000
             ],
 
             [
@@ -158,6 +151,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-11-01 08:00:00',
                 'end_at' => '2026-11-01 14:00:00',
                 'max_attendees' => 600,
+                 'remaining_attendees' => 600
             ],
 
             [
@@ -174,22 +168,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-11-07 09:00:00',
                 'end_at' => '2026-11-07 18:00:00',
                 'max_attendees' => 450,
-            ],
-
-            [
-                'category' => 'Career & Jobs',
-                'city' => 'Lahore',
-                'name' => 'Lahore Career & Job Fair 2026',
-                'description' => 'A career fair connecting students, professionals, employers, and recruiters from multiple industries.',
-                'location_name' => 'Expo Centre Lahore',
-                'address' => 'Johar Town, Lahore',
-                'primary_image' => 'events/default_primary.jpg',
-                'cover_image' => 'events/default_cover.jpg',
-                'type' => 'free',
-                'price' => 0,
-                'start_at' => '2026-11-14 10:00:00',
-                'end_at' => '2026-11-14 17:00:00',
-                'max_attendees' => 1200,
+                'remaining_attendees' => 450
             ],
 
             [
@@ -206,23 +185,10 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-11-20 18:30:00',
                 'end_at' => '2026-11-20 21:00:00',
                 'max_attendees' => 100,
+                'remaining_attendees' => 100
+
             ],
 
-            [
-                'category' => 'Business',
-                'city' => 'Islamabad',
-                'name' => 'Pakistan Business Leadership Forum',
-                'description' => 'A business forum focused on leadership, entrepreneurship, economic trends, and business growth strategies.',
-                'location_name' => 'Islamabad Marriott Hotel',
-                'address' => 'Aga Khan Road, F-5/1, Islamabad',
-                'primary_image' => 'events/default_primary.jpg',
-                'cover_image' => 'events/default_cover.jpg',
-                'type' => 'paid',
-                'price' => 6000,
-                'start_at' => '2026-11-27 09:30:00',
-                'end_at' => '2026-11-27 17:00:00',
-                'max_attendees' => 350,
-            ],
 
             [
                 'category' => 'Entertainment',
@@ -235,9 +201,11 @@ class EventSeeder extends Seeder
                 'cover_image' => 'events/default_cover.jpg',
                 'type' => 'paid',
                 'price' => 1800,
+                'is_featured' => true,
                 'start_at' => '2026-12-04 20:00:00',
                 'end_at' => '2026-12-04 23:00:00',
                 'max_attendees' => 500,
+                'remaining_attendees' => 500
             ],
 
             [
@@ -254,6 +222,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-12-10 09:00:00',
                 'end_at' => '2026-12-10 17:00:00',
                 'max_attendees' => 400,
+                'remaining_attendees' => 400
             ],
 
             [
@@ -270,6 +239,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2026-12-18 15:00:00',
                 'end_at' => '2026-12-20 22:00:00',
                 'max_attendees' => 1000,
+                'remaining_attendees' => 1000
             ],
 
             [
@@ -286,6 +256,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2027-01-09 10:00:00',
                 'end_at' => '2027-01-09 16:00:00',
                 'max_attendees' => 40,
+                'remaining_attendees' => 40
             ],
 
             [
@@ -302,22 +273,7 @@ class EventSeeder extends Seeder
                 'start_at' => '2027-01-15 10:00:00',
                 'end_at' => '2027-01-17 19:00:00',
                 'max_attendees' => 3000,
-            ],
-
-            [
-                'category' => 'Community',
-                'city' => 'Rawalpindi',
-                'name' => 'Community Clean & Green Day',
-                'description' => 'A community initiative encouraging residents to participate in neighborhood cleaning and tree plantation activities.',
-                'location_name' => 'Ayub Park',
-                'address' => 'Jhelum Road, Rawalpindi',
-                'primary_image' => 'events/default_primary.jpg',
-                'cover_image' => 'events/default_cover.jpg',
-                'type' => 'free',
-                'price' => 0,
-                'start_at' => '2027-01-23 08:00:00',
-                'end_at' => '2027-01-23 13:00:00',
-                'max_attendees' => 300,
+                'remaining_attendees' => 3000
             ],
 
             [
@@ -331,9 +287,11 @@ class EventSeeder extends Seeder
                 'cover_image' => 'events/default_cover.jpg',
                 'type' => 'paid',
                 'price' => 700,
+                'is_featured' => true,
                 'start_at' => '2027-02-05 10:00:00',
                 'end_at' => '2027-02-05 15:00:00',
                 'max_attendees' => 250,
+                'remaining_attendees' => 250,
             ],
         ];
 
@@ -350,9 +308,11 @@ class EventSeeder extends Seeder
                 'map_url' => 'https://www.google.com/maps/place/Chichawatni,+Pakistan/@30.5410022,72.692501,11689m/data=!3m2!1e3!4b1!4m6!3m5!1s0x39232a0c466df715:0x9dbbc742bdf47fa!8m2!3d30.5372798!4d72.6983215!16zL20vMDgyZ2p2?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D',
                 'type' => $event['type'],
                 'price' => $event['price'],
+                'is_featured' => $event['is_featured'] ?? false,
                 'start_at' => $event['start_at'],
                 'end_at' => $event['end_at'],
                 'max_attendees' => $event['max_attendees'],
+                'remaining_attendees' => $event['remaining_attendees'],
             ]);
         }
     }

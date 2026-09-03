@@ -38,32 +38,129 @@ class HomePageController extends Controller
         $eventId = $request->event_id;
         $userId = auth()->id();
 
-        // get event that user wants to book
+        // Get event
         $event = Event::findOrFail($eventId);
-        // return $event;
 
-        // return $event;  
-        // check is the event is free, if free -> let the user book without checkout processing
-        if ($event->type == 'free') {
-            // radnom orderID
-            $bookingReference = 'BOOK-' . strtoupper(Str::random(10));
+        // Check if user already has a booking for this event
+        $existingBooking = Booking::where('user_id', $userId)
+            ->where('event_id', $event->id)
+            ->whereIn('status', ['pending', 'confirmed'])
+            ->first();
+
+        if ($existingBooking) {
+            Swal::info([
+                'title' => 'Already Booked',
+                'text' => 'You already have a booking for this event.',
+            ]);
+
+            return redirect()->back();
+        }
+
+        // Check seat availability
+        if ($event->remaining_attendees <= 0) {
+            Swal::error([
+                'title' => 'Booking Failed!',
+                'text' => 'No seat available to book, please try a different event.',
+            ]);
+
+            return redirect()->back();
+        }
+
+        // Free event
+        if ($event->type === 'free') {
+
             try {
+
                 $booking = Booking::create([
                     'user_id' => $userId,
-                    'event_id' => $eventId,
-                    'booking_reference' => $bookingReference,
-                    'status' => 'paid',
-                ]);
-                Swal::success([
-                    'title' => 'Booking Success',
-                    'text'  => 'Booking has been confirmed'
+                    'event_id' => $event->id,
+                    'booking_reference' => 'BOOK-' . strtoupper(Str::random(10)),
+                    'amount' => 0,
+                    'status' => 'confirmed',
+                    'payment_provider' => null,
+                    'payment_status' => 'not_required',
                 ]);
 
-                return view('site.success', compact('event', 'booking'));
+                // Decrease remaining attendees
+                $event->decrement('remaining_attendees');
+
+                Swal::success([
+                    'title' => 'Booking Success',
+                    'text' => 'Your booking has been confirmed.',
+                ]);
+
+                return redirect()->route('checkout.success', [
+                    'booking' => $booking->id,
+                ]);
             } catch (\Exception $e) {
+
                 Swal::error([
                     'title' => 'Booking Failed!',
-                    'text' => 'Something went wrong : ' .  $e->getMessage(),
+                    'text' => 'Something went wrong while creating your booking.',
+                ]);
+
+                return redirect()->back();
+            }
+        }
+
+        // Paid event
+        if ($event->type === 'paid') {
+
+            try {
+
+                $booking = Booking::create([
+                    'user_id' => $userId,
+                    'event_id' => $event->id,
+                    'booking_reference' => 'BOOK-' . strtoupper(Str::random(10)),
+                    'amount' => $event->getRawOriginal('price'),
+                    'status' => 'pending',
+                    'payment_provider' => 'stripe',
+                    'payment_status' => 'pending',
+                ]);
+
+                $stripe = new \Stripe\StripeClient(
+                    config('services.stripe.secret')
+                );
+
+                $session = $stripe->checkout->sessions->create([
+                    'line_items' => [
+                        [
+                            'price_data' => [
+                                'currency' => 'usd',
+                                'product_data' => [
+                                    'name' => $event->name,
+                                ],
+                                'unit_amount' => $booking->amount,
+                            ],
+                            'quantity' => 1,
+                        ],
+                    ],
+
+                    'mode' => 'payment',
+
+                    'metadata' => [
+                        'booking_id' => $booking->id,
+                        'booking_reference' => $booking->booking_reference,
+                        'event_id' => $event->id,
+                    ],
+
+                    'success_url' => url('/checkout/success')
+                        . '?session_id={CHECKOUT_SESSION_ID}',
+
+                    'cancel_url' => url('/checkout/cancel')
+                        . '?session_id={CHECKOUT_SESSION_ID}',
+                ]);
+
+                $booking->update([
+                    'stripe_checkout_session_id' => $session->id,
+                ]);
+
+                return redirect()->away($session->url);
+            } catch (\Exception $e) {
+
+                Swal::error([
+                    'title' => 'Payment Error',
+                    'text' => 'We could not start the payment process. Please try again.',
                 ]);
 
                 return redirect()->back();
@@ -73,8 +170,73 @@ class HomePageController extends Controller
 
 
     // method that loads success page after successfull checkout
-    public function success()
+    public function success(Request $request)
     {
-        return view('site.success');
+        if ($request->filled('booking')) {
+
+            $booking = Booking::where('id', $request->booking)
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
+
+            $event = $booking->event;
+
+            return view('site.success', [
+                'booking' => $booking,
+                'event' => $event,
+                'session' => null,
+            ]);
+        }
+
+
+
+        $request->validate([
+            'session_id' => ['required', 'string'],
+        ]);
+
+        $stripe = new \Stripe\StripeClient(
+            config('services.stripe.secret')
+        );
+
+        $session = $stripe->checkout->sessions->retrieve(
+            $request->session_id
+        );
+
+        // Payment successful?
+        if ($session->payment_status !== 'paid') {
+            return redirect()->route('checkout.cancel', [
+                'session_id' => $session->id,
+            ]);
+        }
+
+        // Find booking
+        $booking = Booking::where(
+            'stripe_checkout_session_id',
+            $session->id
+        )
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $event = $booking->event;
+
+
+        if ($booking->status !== 'confirmed') {
+
+            $booking->update([
+                'status' => 'confirmed',
+                'payment_status' => 'paid',
+                'stripe_payment_intent_id' => $session->payment_intent,
+                'paid_at' => now(),
+            ]);
+
+            // Decrease available seats only once
+            $event->decrement('remaining_attendees');
+        }
+
+
+        return view('site.success', [
+            'booking' => $booking,
+            'event' => $event,
+            'session' => $session,
+        ]);
     }
 }

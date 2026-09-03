@@ -53,6 +53,26 @@ Route::get('/logout', [UserLogoutController::class, 'userLogout'])
     ->name('user.logout');
 
 
+
+/*
+|--------------------------------------------------------------------------
+| Checkout Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth')->group(function(){
+    Route::get('/checkout', [HomePageController::class, 'checkout'])
+    ->name('checkout');
+
+    // Success page
+    Route::get('/checkout/success', [HomePageController::class, 'success'])
+    ->name('checkout.success');
+});
+
+Route::get('/stripe-test/cancel', function () {
+    return 'Payment cancelled!';
+});
+
 /*
 |--------------------------------------------------------------------------
 | User Protected Routes

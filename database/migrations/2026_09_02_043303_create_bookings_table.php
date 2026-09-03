@@ -15,8 +15,20 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('event_id')->constrained();
-            $table->string('booking_reference', 255)->unique();
-            $table->string('status')->default('unpaid');
+            $table->string('booking_reference')->unique();
+
+            // Price snapshot at the time of booking
+            $table->unsignedBigInteger('amount');
+
+            // Booking/payment state
+            $table->string('status')->default('pending');
+
+            // Stripe information
+            $table->string('payment_provider')->nullable();
+            $table->string('payment_status')->nullable();
+            $table->string('stripe_checkout_session_id')->nullable()->unique();
+            $table->string('stripe_payment_intent_id')->nullable()->unique();
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });
     }

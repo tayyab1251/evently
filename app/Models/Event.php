@@ -24,7 +24,8 @@ class Event extends Model
         'is_featured',
         'start_at',
         'end_at',
-        'max_attendees'
+        'max_attendees',
+        'remaining_attendees'
     ];
 
 
@@ -93,10 +94,10 @@ class Event extends Model
     {
         return Attribute::make(
             // Accessor:
-            get: fn(string $price) => $price / 100,
+            get: fn($price) => $price / 100,
 
             // Mutator:
-            set: fn(string $price) => $price * 100,
+            set: fn($price) => $price * 100,
         );
     }
 
