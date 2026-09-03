@@ -164,7 +164,7 @@ Before running Evently, make sure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone <https://github.com/tayyab1251/event_booking_app>
+git clone <https://github.com/tayyab1251/evently>
 cd evently
 ```
 
@@ -485,7 +485,7 @@ If you want to contribute to Evently:
 ### 1. Clone the repository
 
 ```bash
-git clone <https://github.com/tayyab1251/event_booking_app>
+git clone <https://github.com/tayyab1251/evently>
 cd evently
 ```
 
@@ -546,7 +546,7 @@ If you want to contribute:
 1. Clone the repository.
 
 ```bash
-git clone <https://github.com/tayyab1251/event_booking_app>
+git clone <https://github.com/tayyab1251/evently>
 cd evently
 ```
 
