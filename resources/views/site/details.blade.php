@@ -63,15 +63,27 @@
 
                     <div class="d-flex align-items-center gap-2 text-up mb-4">
                         <i class="bi bi-people"></i>
-                        <span class="fw-semibold">120 seats available</span>
+                        <span class="fw-semibold">{{$event->remaining_attendees}} seats available to book</span>
                     </div>
 
+                     <div class="d-flex align-items-center gap-2 text-up mb-4 ">
+                        <i class="bi bi-people text-danger"></i>
+                        <span class="fw-semibold text-danger">{{$event->max_attendees}} Max Attendees </span>
+                    </div>
+
+                    @if ($event->remaining_attendees > 0)
                     <form action="{{route('checkout')}}" method="get">
                         <input type="hidden" name="event_id" value="{{$event->id}}">
                     <button type="submit" class="btn btn-brand btn-brand-primary btn-brand-lg w-100 mb-3"data-primary-cta>
                         <i class="bi bi-ticket-perforated me-2"></i>Book Now
                     </button>
                     </form>
+
+                    @else
+
+                        <p class="text-center status-badge status-published text-white bg-danger d-block">All the seats have been booked</p>
+                        
+                    @endif
                     <p class="caption text-muted-c text-center mb-0"><i class="bi bi-shield-check me-1"></i>Secure
                         checkout · Instant confirmation</p>
                 </div>

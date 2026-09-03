@@ -47,6 +47,7 @@ return new class extends Migration
             $table->dateTime('end_at');
 
             $table->unsignedInteger('max_attendees')->default(1);
+            $table->unsignedInteger('remaining_attendees')->nullable();
 
             $table->timestamps();
         });
