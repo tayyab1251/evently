@@ -12,14 +12,15 @@
             </button>
             <div class="d-none d-lg-flex align-items-center gap-1">
                 <a class="nav-link active" href="{{ route('home') }}">Home</a>
-                <a class="nav-link" href="events.html">Events</a>
-                <a class="nav-link" href="events.html">Categories</a>
+                <a class="nav-link" href="#">Events</a>
+                <a class="nav-link" href="#">Categories</a>
                 <a class="nav-link" href="#about">About</a>
                 <a class="nav-link" href="#contact">Contact</a>
             </div>
             <div class="d-none d-lg-flex align-items-center gap-3">
-                <a href="events.html" class="text-on-dark-soft fs-5" aria-label="Search"><i
-                        class="bi bi-search"></i></a>
+                {{-- <a href="#" class="text-on-dark-soft fs-5" aria-label="Search"><i
+                        class="bi bi-search"></i>
+                </a> --}}
                 @if(auth()->check())    
                 <a href="{{route('user.dashboard')}}" class="btn btn-brand btn-brand-outline-dark">Dashboard</a>
                 <a href="{{route('user.logout')}}" class="btn btn-brand btn-danger">Logout</a>

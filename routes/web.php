@@ -61,7 +61,7 @@ Route::get('/logout', [UserLogoutController::class, 'userLogout'])
 */
 
 Route::middleware('auth')->group(function(){
-    Route::get('/checkout', [HomePageController::class, 'checkout'])
+    Route::post('/checkout', [HomePageController::class, 'checkout'])
     ->name('checkout');
 
     // Success page

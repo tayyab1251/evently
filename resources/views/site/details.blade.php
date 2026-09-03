@@ -72,7 +72,8 @@
                     </div>
 
                     @if ($event->remaining_attendees > 0)
-                    <form action="{{route('checkout')}}" method="get">
+                    <form action="{{route('checkout')}}" method="post">
+                        @csrf
                         <input type="hidden" name="event_id" value="{{$event->id}}">
                     <button type="submit" class="btn btn-brand btn-brand-primary btn-brand-lg w-100 mb-3"data-primary-cta>
                         <i class="bi bi-ticket-perforated me-2"></i>Book Now

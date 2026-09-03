@@ -3,18 +3,17 @@
         <div class="container-xl-custom">
             <div class="row g-4 pb-5">
                 <div class="col-6 col-lg-3">
-                    <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="index.html">
-                        <span class="icon-plate" style="width:32px;height:32px;font-size:15px;">EB</span>
-                        Event<span class="dot text-primary-c">.</span>booking
+                    <a class="navbar-brand d-flex align-items-center gap-2 mb-3 fw-bold" href="{{route('home')}}">
+                       {{config('app.name')}}
                     </a>
                     <p class="text-body-c" style="max-width:220px;">Discover and book conferences, workshops, concerts
                         and meetups near you.</p>
                 </div>
                 <div class="col-6 col-lg-2">
                     <div class="footer-heading">Navigation</div>
-                    <a class="footer-link" href="index.html">Home</a>
-                    <a class="footer-link" href="events.html">Events</a>
-                    <a class="footer-link" href="events.html">Categories</a>
+                    <a class="footer-link" href="{{route('home')}}">Home</a>
+                    <a class="footer-link" href="#">Events</a>
+                    <a class="footer-link" href="#">Categories</a>
                     <a class="footer-link" href="#about">About</a>
                     <a class="footer-link" href="#contact">Contact</a>
                 </div>
@@ -44,8 +43,8 @@
         </div>
         <div class="legal-band">
             <div class="container-xl-custom d-flex flex-wrap justify-content-between gap-2">
-                <span>© 2026 Event Booking. All rights reserved.</span>
-                <span>Karachi, Pakistan</span>
+                <span>© 2026 {{config('app.name')}}. All rights reserved.</span>
+                <span>Made with ❤️ by Tayyab &nbsp; (tayyabsabir72@gmail.com)</span>
             </div>
         </div>
     </footer>
