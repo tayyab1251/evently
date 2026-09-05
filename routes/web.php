@@ -60,13 +60,13 @@ Route::get('/logout', [UserLogoutController::class, 'userLogout'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function(){
+Route::middleware('auth')->group(function () {
     Route::post('/checkout', [HomePageController::class, 'checkout'])
-    ->name('checkout');
+        ->name('checkout');
 
     // Success page
     Route::get('/checkout/success', [HomePageController::class, 'success'])
-    ->name('checkout.success');
+        ->name('checkout.success');
 });
 
 Route::get('/stripe-test/cancel', function () {
@@ -80,10 +80,13 @@ Route::get('/stripe-test/cancel', function () {
 */
 
 Route::middleware('auth')->group(function () {
+    Route::get('/test', function(){
+        dd(auth()->user()->role);
+    });
 
-    Route::get('/dashboard', function () {
-        return Auth::user();
-    })->name('user.dashboard');
+    // Admin Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'loadLatestEvents'])
+        ->name('admin.dashboard');
 });
 
 
@@ -128,10 +131,6 @@ Route::prefix('admin')
     ->name('admin.')
     ->middleware(['auth', 'admin'])
     ->group(function () {
-
-        // Admin Dashboard
-        Route::get('/dashboard', [DashboardController::class, 'loadLatestEvents'])
-            ->name('dashboard');
 
         // Admin Events
         Route::resource('events', EventController::class);

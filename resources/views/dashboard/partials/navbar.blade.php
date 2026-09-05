@@ -114,7 +114,7 @@
         </li>
 
         <li>
-          <form action="{{ route('admin.logout') }}" method="POST">
+          <form action="{{ auth()->user()->isAdmin() ? route('admin.logout') : route('user.logout') }}" method="{{ auth()->user()->isAdmin() ? 'POST' : 'GET' }}">
             @csrf
             <button type="submit" class="dropdown-item text-danger">
               <i class="bi bi-box-arrow-right"></i>

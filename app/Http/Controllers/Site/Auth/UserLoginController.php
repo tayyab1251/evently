@@ -42,7 +42,7 @@ class UserLoginController extends Controller
         $request->session()->regenerate();
 
         return redirect()
-            ->intended(route('user.dashboard'))
+            ->intended(route('admin.dashboard'))
             ->with('success', 'You are logged in successfully.');
     }
 }

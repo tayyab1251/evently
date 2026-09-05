@@ -55,9 +55,13 @@ START: Sidebar Component (V1 routes + V2 accordion structure)
                                     All Events
                                 </a>
                             </li>
-                            <li><a href="{{ route('admin.events.create') }}"
-                                    class="sidebar-submenu-link {{ request()->routeIs('admin.events.create') ? 'active' : '' }}">Add
-                                    Event</a></li>
+                            @if (auth()->user()->isAdmin())
+                            <li>
+                                <a href="{{ route('admin.events.create') }}"
+                                    class="sidebar-submenu-link {{ request()->routeIs('admin.events.create') ? 'active' : '' }}">AddEvent
+                                </a>
+                            </li>
+                            @endif
                         </ul>
                     </div>
                 </li>

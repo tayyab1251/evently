@@ -22,7 +22,7 @@
                         class="bi bi-search"></i>
                 </a> --}}
                 @if(auth()->check())    
-                <a href="{{route('user.dashboard')}}" class="btn btn-brand btn-brand-outline-dark">Dashboard</a>
+                <a href="{{route('admin.dashboard')}}" class="btn btn-brand btn-brand-outline-dark">Dashboard</a>
                 <a href="{{route('user.logout')}}" class="btn btn-brand btn-danger">Logout</a>
 
                 @else

@@ -5,13 +5,15 @@
 @push('styles')
 
 @vite([
-'resources/assets/libs/datatables/css/dataTables.bootstrap5.min.css',
-'resources/assets/libs/datatables/css/buttons.bootstrap5.min.css',
-'resources/assets/libs/datatables/css/select.bootstrap5.min.css',
+  'resources/assets/libs/datatables/css/dataTables.bootstrap5.min.css',
+  'resources/assets/libs/datatables/css/buttons.bootstrap5.min.css',
+  'resources/assets/libs/datatables/css/select.bootstrap5.min.css',
 ])
 @endpush
 
 @section('content')
+
+@if (auth()->user()->isAdmin())
 
 <!-- START: Dashboard Header Banner -->
 <div class="page-header">
@@ -19,15 +21,11 @@
     <h1 class="page-title">Dashboard</h1>
     <p class="page-subtitle">An easy way to manage sales with care and precision.</p>
   </div>
-  <button class="btn-date-picker" type="button" id="date-picker-trigger">
-    <i class="bi bi-calendar4-event"></i>
-    <span id="selected-date-range">January 12, 2026 - January 23, 2026</span>
-    <i class="bi bi-chevron-down ms-1"></i>
-  </button>
 </div>
 <!-- END: Dashboard Header Banner -->
 
 <!-- START: DataTables with Buttons Card Container -->
+    
 <div class="card p-4 shadow-sm border-0 mb-4">
   <div class="table-responsive">
     <table id="basic-datatable" class="table table-hover align-middle w-100">
@@ -98,23 +96,26 @@
     </table>
   </div>
 </div>
+@else
+@include('dashboard.user-bookings')
+@endif
 <!-- END: DataTables with Buttons Card Container -->
 @push('scripts')
 
 @vite([
-'resources/assets/libs/datatables/js/jquery.dataTables.min.js',
-'resources/assets/libs/datatables/js/dataTables.bootstrap5.min.js',
-'resources/assets/libs/jszip/jszip.min.js',
-'resources/assets/libs/pdfmake/pdfmake.min.js',
-'resources/assets/libs/pdfmake/vfs_fonts.js',
-'resources/assets/libs/datatables/js/dataTables.buttons.min.js',
-'resources/assets/libs/datatables/js/buttons.bootstrap5.min.js',
-'resources/assets/libs/datatables/js/buttons.html5.min.js',
-'resources/assets/libs/datatables/js/buttons.print.min.js',
-'resources/assets/libs/datatables/js/buttons.colVis.min.js',
-'resources/assets/libs/datatables/js/dataTables.select.min.js',
-'resources/assets/libs/lucide/lucide.min.js',
-'resources/assets/js/datatables-init.js',
+  'resources/assets/libs/datatables/js/jquery.dataTables.min.js',
+  'resources/assets/libs/datatables/js/dataTables.bootstrap5.min.js',
+  'resources/assets/libs/jszip/jszip.min.js',
+  'resources/assets/libs/pdfmake/pdfmake.min.js',
+  'resources/assets/libs/pdfmake/vfs_fonts.js',
+  'resources/assets/libs/datatables/js/dataTables.buttons.min.js',
+  'resources/assets/libs/datatables/js/buttons.bootstrap5.min.js',
+  'resources/assets/libs/datatables/js/buttons.html5.min.js',
+  'resources/assets/libs/datatables/js/buttons.print.min.js',
+  'resources/assets/libs/datatables/js/buttons.colVis.min.js',
+  'resources/assets/libs/datatables/js/dataTables.select.min.js',
+  'resources/assets/libs/lucide/lucide.min.js',
+  'resources/assets/js/datatables-init.js',
 ])
 
 @endpush
